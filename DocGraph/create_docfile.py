@@ -43,8 +43,8 @@ class CLDocFile:
         for idx, parentID in enumerate(self.parentIDs):
             edge = copy.copy(config)
             edge["id"] = "{}_e{}".format(self.name, idx)
-            edge["source"] = self.name
-            edge["target"] = parentID
+            edge["source"] = parentID
+            edge["target"] = self.name
 
             edges.append(edge)
         return edges
@@ -78,6 +78,16 @@ class ColorAssigner:
         color = None
         while color is None or color in reserved_colors:
             color = "#%06x" % random.randint(0, 0xFFFFFF)
+        return color
+
+    def random_rgba_color(self):
+        reserved_colors = ['rgba(0, 0, 255, 1)']
+        color = None
+        while color is None or color in reserved_colors:
+            color = 'rgba({}, {}, {}, 1)'.format(
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255))
         return color
 
     def all_colors_assigned(self, node_map):
@@ -120,7 +130,8 @@ class ColorAssigner:
             color, node_path = self.get_path_to_colored_node(uncolored_node, node_map)
 
             if color is None:
-                color = self.random_hex_color()
+                # color = self.random_hex_color()
+                color = self.random_rgba_color()
 
             unassigned = [uncolored_node]
             while len(unassigned) > 0:

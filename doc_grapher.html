@@ -43,10 +43,18 @@
     #slidertitle {
         text-align: center;
     }
+    #search {
+        position:fixed;
+        left:10px;
+        top:10px;
+    }
 </style>
 </head>
 <body>
 <div id="container"></div>
+<div id="search">
+    <input id="searchBox" type="text" name="searchBox">
+</div>
 <div id="slider">
     <div id="slidertitle"></div>
 </div>
@@ -68,6 +76,18 @@ var g = {
     edges: []
 };
 
+// make a color transparent
+var transparentize = function(rgba)
+{
+    lastIndex = rgba.lastIndexOf(',');
+    prefix = rgba.substr(0, lastIndex);
+    suffix = ', .1)';
+    return prefix + suffix;
+}
+
+var HIGHLIGHT_COLOR = 'rgba(0, 0, 255, 1)' // '#0000ff'
+var UNHIGHLIGHT_COLOR = 'rgba(100, 100, 100, .5)'
+
 s = new sigma({
     graph: g,
     container: 'container',
@@ -84,7 +104,7 @@ s = new sigma({
         defaultNodeColor: '#ec5148',
         defaultEdgeColor: '#0000ff',
         defaultEdgeType: 'arrow',
-        edgeColor: 'source',
+        edgeColor: 'target',
         autoResize: false,
         autoRescale: true,
         doubleClickEnabled: false,
@@ -104,18 +124,14 @@ sigma.parsers.json(
         var nodes = s.graph.nodes();
         var len = nodes.length;
 
-        nodes.forEach(function(n) {
-            n.originalColor = n.color;
-        });
-
-        for (var i=0; i<len; i++)
-        {
-            var node = nodes[i];
-
+        nodes.forEach(function(node) {
             node.x = Math.random();
             node.y = Math.random();
-            /* node.size = s.graph.degree(node.id); */
-        }
+
+            node.originalColor = node.color;
+
+            node.lowerLabel = node.label.toLowerCase();
+        });
 
         s.refresh();
 
@@ -144,7 +160,7 @@ sigma.parsers.json(
         /*
          * bind to clicks
          */
-         s.bind('clickNode', function(e) {
+        s.bind('clickNode', function(e) {
             var node = e.data.node;
 
             var msg = '<div id="slidertitle"><b>' + node.id + '</b><br><br></div>'
@@ -161,21 +177,59 @@ sigma.parsers.json(
             });
 
             /* deal with node colors */
-            unhighlightNodes();
-            node.color = '#0000ff'
-            s.refresh()
-         });
+            // unhighlightNodes();
+            // node.color = HIGHLIGHT_COLOR;
 
-         s.bind('doubleClickStage', function(e) {
+            nodes.forEach(function(n) {
+                n.color = n == node ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
+            });
+
+            s.refresh()
+        });
+
+        s.bind('doubleClickStage', function(e) {
             $('#slider').animate({
                 bottom: -270
             }, {
                 duration: "fast"
             });
 
-            unhighlightNodes();
+            nodes.forEach(function(n) {
+                n.color = n.originalColor;
+            });
+
             s.refresh()
-         });
+        });
+
+        var searchBox = document.getElementById('searchBox');
+        searchBox.oninput = function(e)
+        {
+            var searchterm = searchBox.value.toLowerCase()
+            var regexString = '.*' // loose
+            for (var i=0; i<searchterm.length; i++)
+            {
+                regexString += searchterm[i] + '.*'
+            }
+            // var regex = new RegExp('.*' + searchterm + '.*', 'g') // strict
+            var regex = new RegExp(regexString);
+            var validSearch = searchterm.length > 0
+            nodes.forEach(function(n) {
+                // console.log(n.lowerLabel)
+                var matches = n.lowerLabel.match(regex);
+                // n.color = matches && validSearch ? HIGHLIGHT_COLOR : n.originalColor;
+                if (validSearch)
+                {
+                    n.color = matches ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
+                }
+                else
+                {
+                    n.color = n.originalColor;
+                }
+                // n.hidden = validSearch && !matches
+                n.alpha = 0;
+            });
+            s.refresh();
+        }
     });
 
 </script>
