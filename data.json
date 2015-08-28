@@ -1,0 +1,78 @@
+{
+  "nodes": [
+    {
+      "id": "n0",
+      "label": "A node",
+      "size": 10,
+      "color": "#ec5148"
+    },
+    {
+      "id": "n1",
+      "label": "Another node",
+      "size": 10,
+      "color": "#ec5148"
+    },
+    {
+      "id": "n2",
+      "label": "And a last one",
+      "size": 10,
+      "color": "#ec5148"
+    },
+    {
+      "id": "n3",
+      "label": "node 3",
+      "size": 10,
+      "color": "#0000ff"
+    },
+    {
+      "id": "n4",
+      "label": "node 4",
+      "size": 10,
+      "color": "#0000ff"
+    },
+    {
+      "id": "n5",
+      "label": "node 5",
+      "size": 10,
+      "color": "#0000ff"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "source": "n0",
+      "target": "n1",
+      "size": 3
+    },
+    {
+      "id": "e1",
+      "source": "n1",
+      "target": "n2",
+      "size": 3
+    },
+    {
+      "id": "e2",
+      "source": "n2",
+      "target": "n0",
+      "size": 3
+    },
+    {
+      "id": "e3",
+      "source": "n3",
+      "target": "n4",
+      "size": 3
+    },
+    {
+      "id": "e4",
+      "source": "n4",
+      "target": "n5",
+      "size": 3
+    },
+    {
+      "id": "e5",
+      "source": "n5",
+      "target": "n3",
+      "size": 3
+    }
+  ]
+}

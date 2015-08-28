@@ -1,0 +1,174 @@
+{
+    "nodes": [
+        {
+            "filepath": "testfiles/data_formatters/data_formatter_miamicentral.R", 
+            "color": "#9139c4", 
+            "notes": "Miami Central has very strange classes - investigating with extra logging", 
+            "label": "R_DataFormatter_MiamiCentralHS", 
+            "last_modified": "2015-08-24 15:51:41", 
+            "id": "R_DataFormatter_MiamiCentralHS", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/data_formatters/data_formatter_miamidade.R", 
+            "color": "#9139c4", 
+            "notes": "Formats Miami Dade data, adds special class code handling", 
+            "label": "R_DataFormatter_MiamiDade", 
+            "last_modified": "2015-08-24 15:50:08", 
+            "id": "R_DataFormatter_MiamiDade", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/mungers/2011_munger.java", 
+            "color": "#9e5821", 
+            "notes": "Munger munges data!", 
+            "label": "Munger2011", 
+            "last_modified": "2015-08-24 16:08:20", 
+            "id": "Munger2011", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/db_utils/db_pusher.py", 
+            "color": "#e42b6d", 
+            "notes": "API to commit data to database.", 
+            "label": "Py_PushDB", 
+            "last_modified": "2015-08-24 15:54:16", 
+            "id": "Py_PushDB", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/db_utils/db_updater.py", 
+            "color": "#e42b6d", 
+            "notes": "Grabbed some QueryDB and PushDB code for testing an update DB. TODO: migrate code back into parent files.", 
+            "label": "Py_UpdateDB", 
+            "last_modified": "2015-08-24 15:54:50", 
+            "id": "Py_UpdateDB", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/mungers/2015_munger.java", 
+            "color": "#9e5821", 
+            "notes": "Minor issues resolved from last year. Everything is cruising along :)", 
+            "label": "Munger2015", 
+            "last_modified": "2015-08-24 16:11:44", 
+            "id": "Munger2015", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/mungers/2014_munger.java", 
+            "color": "#9e5821", 
+            "notes": "Revamped munger completely. Tons of bug fixes.", 
+            "label": "Munger2014", 
+            "last_modified": "2015-08-24 16:10:29", 
+            "id": "Munger2014", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/data_formatter.R", 
+            "color": "#9139c4", 
+            "notes": "Formats data from usage logs", 
+            "label": "R_DataFormatter", 
+            "last_modified": "2015-08-24 16:00:09", 
+            "id": "R_DataFormatter", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/data_formatters/data_formatter_duval.R", 
+            "color": "#9139c4", 
+            "notes": "Formats Duval data, collapses several district files", 
+            "label": "R_DataFormatter_Duval", 
+            "last_modified": "2015-08-24 15:48:56", 
+            "id": "R_DataFormatter_Duval", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/db_utils/db_querier.py", 
+            "color": "#e42b6d", 
+            "notes": "Provides API to query central database.", 
+            "label": "Py_QueryDB", 
+            "last_modified": "2015-08-24 15:52:22", 
+            "id": "Py_QueryDB", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/mungers/2013_munger.java", 
+            "color": "#9e5821", 
+            "notes": "Moar updates.", 
+            "label": "Munger2013", 
+            "last_modified": "2015-08-24 16:09:54", 
+            "id": "Munger2013", 
+            "size": 10
+        }, 
+        {
+            "filepath": "testfiles/mungers/2012_munger.java", 
+            "color": "#9e5821", 
+            "notes": "Updates galore. Also minor bug fixes from the future (2014!)", 
+            "label": "Munger2012", 
+            "last_modified": "2015-08-24 16:09:37", 
+            "id": "Munger2012", 
+            "size": 10
+        }
+    ], 
+    "edges": [
+        {
+            "source": "R_DataFormatter_MiamiCentralHS", 
+            "target": "R_DataFormatter_MiamiDade", 
+            "id": "R_DataFormatter_MiamiCentralHS_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "R_DataFormatter_MiamiDade", 
+            "target": "R_DataFormatter", 
+            "id": "R_DataFormatter_MiamiDade_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "Py_UpdateDB", 
+            "target": "Py_QueryDB", 
+            "id": "Py_UpdateDB_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "Py_UpdateDB", 
+            "target": "Py_PushDB", 
+            "id": "Py_UpdateDB_e1", 
+            "size": 3
+        }, 
+        {
+            "source": "Munger2015", 
+            "target": "Munger2014", 
+            "id": "Munger2015_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "Munger2014", 
+            "target": "Munger2013", 
+            "id": "Munger2014_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "R_DataFormatter_Duval", 
+            "target": "R_DataFormatter", 
+            "id": "R_DataFormatter_Duval_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "Munger2013", 
+            "target": "Munger2012", 
+            "id": "Munger2013_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "Munger2012", 
+            "target": "Munger2011", 
+            "id": "Munger2012_e0", 
+            "size": 3
+        }, 
+        {
+            "source": "Munger2012", 
+            "target": "Munger2014", 
+            "id": "Munger2012_e1", 
+            "size": 3
+        }
+    ]
+}

@@ -1,0 +1,183 @@
+<html>
+<head>
+<style type="text/css">
+    #container {
+        max-width: 100%;
+        height: 100%;
+        margin: auto;
+    }
+    #slider{
+        text-align: left;
+
+        /*hide the window*/
+        position:fixed;
+        bottom:-270px;
+        right:0px;
+
+        /*set the size and background color*/
+        height:250px; width:610px;
+        background-color:#fff;
+
+        /*add border*/
+        /*border-top:1px solid gray;*/
+        /*border-left:1px solid gray;*/
+
+        /*setup text*/
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+        font-size: 1.2em;
+
+        /*add shadow*/
+        -moz-box-shadow: 0px 0px 15px #888;
+        -webkit-box-shadow: 0px 0px 15px #888;
+        box-shadow: 0px 0px 15px #888;
+
+        /*prevent text selection*/
+        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+        -moz-user-select: none; /* mozilla browsers */
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        -ms-user-select: none; /* IE10+ */
+    }
+    #slidertitle {
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div id="container"></div>
+<div id="slider">
+    <div id="slidertitle"></div>
+</div>
+<script src="lib/sigma.min.js"></script>
+<script src="lib/sigma.parsers.json.min.js"></script>
+<script src="lib/sigma.plugins.dragNodes.js"></script>
+<script src="lib/sigma.settings.js"></script>
+
+<script src="lib/worker.js"></script>
+<script src="lib/supervisor.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+<script>
+var g = {
+    nodes: [],
+    edges: []
+};
+
+s = new sigma({
+    graph: g,
+    container: 'container',
+    renderer: {
+        container: document.getElementById('container'),
+        type: 'canvas',
+    },
+    settings: {
+        minNodeSize: 1,
+        maxNodeSize: 10,
+        minArrowSize: 10,
+        maxArrowSize: 10,
+        defaultEdgeType: 'arrow',
+        defaultNodeColor: '#ec5148',
+        defaultEdgeColor: '#0000ff',
+        defaultEdgeType: 'arrow',
+        edgeColor: 'source',
+        autoResize: false,
+        autoRescale: true,
+        doubleClickEnabled: false,
+        eventsEnabled: true,
+        zoomMin: .3,  /* sets zoom-in */
+        zoomMax: 5,   /* sets zoom-out */
+        zoomingRatio: 1.5
+    }
+});
+
+sigma.parsers.json(
+    // 'data.json',
+    'output.json',
+    s,
+    function() {
+        var i;
+        var nodes = s.graph.nodes();
+        var len = nodes.length;
+
+        nodes.forEach(function(n) {
+            n.originalColor = n.color;
+        });
+
+        for (var i=0; i<len; i++)
+        {
+            var node = nodes[i];
+
+            node.x = Math.random();
+            node.y = Math.random();
+            /* node.size = s.graph.degree(node.id); */
+        }
+
+        s.refresh();
+
+        s.startForceAtlas2({
+            worker: true, 
+            barnesHutOptimize: false,
+            slowDown: 1000,
+            // startingIterations: 10000
+        });
+
+
+        setTimeout(function() {
+            s.stopForceAtlas2();
+
+            // disabled for now...
+            // sigma.plugins.dragNodes(s, s.renderers[0]);    
+        }, 10000)
+
+        var unhighlightNodes = function()
+        {
+            nodes.forEach(function(n) {
+                n.color = n.originalColor;
+            });
+        };
+
+        /*
+         * bind to clicks
+         */
+         s.bind('clickNode', function(e) {
+            var node = e.data.node;
+
+            var msg = '<div id="slidertitle"><b>' + node.id + '</b><br><br></div>'
+            msg += '<b>Notes:</b> ' + node.notes + '<br><br>'
+            msg += '<b>Path:</b> ' + node.filepath + '<br><br>'
+            msg += '<b>Last Modified:</b> ' + node.last_modified
+
+            document.getElementById('slider').innerHTML = msg;
+
+            $('#slider').animate({
+                bottom: 0
+            }, { 
+                duration: "fast"
+            });
+
+            /* deal with node colors */
+            unhighlightNodes();
+            node.color = '#0000ff'
+            s.refresh()
+         });
+
+         s.bind('doubleClickStage', function(e) {
+            $('#slider').animate({
+                bottom: -270
+            }, {
+                duration: "fast"
+            });
+
+            unhighlightNodes();
+            s.refresh()
+         });
+    });
+
+</script>
+</body>
+</html>
