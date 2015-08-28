@@ -48,16 +48,43 @@
         left:10px;
         top:10px;
     }
+    #searchBox {
+        position:fixed;
+        top:10px;
+        width:80%;
+        margin-left:10%;
+    }
 </style>
 </head>
 <body>
+
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+<!-- Bootstrap -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
 <div id="container"></div>
-<div id="search">
+<!-- <div id="search">
     <input id="searchBox" type="text" name="searchBox">
+</div> -->
+<div class="form-group">
+<input id="searchBox" type="text" class="form-control" placeholder="Search">
 </div>
 <div id="slider">
     <div id="slidertitle"></div>
 </div>
+
 <script src="lib/sigma.min.js"></script>
 <script src="lib/sigma.parsers.json.min.js"></script>
 <script src="lib/sigma.plugins.dragNodes.js"></script>
@@ -65,10 +92,6 @@
 
 <script src="lib/worker.js"></script>
 <script src="lib/supervisor.js"></script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
 var g = {
@@ -86,7 +109,7 @@ var transparentize = function(rgba)
 }
 
 var HIGHLIGHT_COLOR = 'rgba(0, 0, 255, 1)' // '#0000ff'
-var UNHIGHLIGHT_COLOR = 'rgba(100, 100, 100, .5)'
+var UNHIGHLIGHT_COLOR = 'rgba(150, 150, 150, 1)'
 
 s = new sigma({
     graph: g,
@@ -157,6 +180,36 @@ sigma.parsers.json(
             });
         };
 
+        var searchBox = document.getElementById('searchBox');
+        searchBox.oninput = function(e)
+        {
+            var searchterm = searchBox.value.toLowerCase()
+            var regexString = '.*' // loose
+            for (var i=0; i<searchterm.length; i++)
+            {
+                regexString += searchterm[i] + '.*'
+            }
+            // var regex = new RegExp('.*' + searchterm + '.*', 'g') // strict
+            var regex = new RegExp(regexString);
+            var validSearch = searchterm.length > 0
+            nodes.forEach(function(n) {
+                // console.log(n.lowerLabel)
+                var matches = n.lowerLabel.match(regex);
+                // n.color = matches && validSearch ? HIGHLIGHT_COLOR : n.originalColor;
+                if (validSearch)
+                {
+                    n.color = matches ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
+                }
+                else
+                {
+                    n.color = n.originalColor;
+                }
+                // n.hidden = validSearch && !matches
+                n.alpha = 0;
+            });
+            s.refresh();
+        }
+
         /*
          * bind to clicks
          */
@@ -198,38 +251,10 @@ sigma.parsers.json(
                 n.color = n.originalColor;
             });
 
+           searchBox.value = ''; 
+
             s.refresh()
         });
-
-        var searchBox = document.getElementById('searchBox');
-        searchBox.oninput = function(e)
-        {
-            var searchterm = searchBox.value.toLowerCase()
-            var regexString = '.*' // loose
-            for (var i=0; i<searchterm.length; i++)
-            {
-                regexString += searchterm[i] + '.*'
-            }
-            // var regex = new RegExp('.*' + searchterm + '.*', 'g') // strict
-            var regex = new RegExp(regexString);
-            var validSearch = searchterm.length > 0
-            nodes.forEach(function(n) {
-                // console.log(n.lowerLabel)
-                var matches = n.lowerLabel.match(regex);
-                // n.color = matches && validSearch ? HIGHLIGHT_COLOR : n.originalColor;
-                if (validSearch)
-                {
-                    n.color = matches ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
-                }
-                else
-                {
-                    n.color = n.originalColor;
-                }
-                // n.hidden = validSearch && !matches
-                n.alpha = 0;
-            });
-            s.refresh();
-        }
     });
 
 </script>
