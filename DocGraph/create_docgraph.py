@@ -12,10 +12,15 @@ import datetime
 
 
 class DocNode:
-    def __init__(self, name, filepath, parentIDs=[], notes=None):
+    def __init__(self, name, filepath, parentIDs=[], siblingIDs=[], notes=None):
         self.name = name  # name is unique
         self.filepath = filepath  # file name associated with this doc file
-        self.parentIDs = parentIDs  # can have multiple parents, optional
+        self.edges = []
+        for parentID in parentIDs:
+            self.edges.append({'id' : parentID, 'type': 'parent'})
+        for siblingID in siblingIDs:
+            self.edges.append({'id' : siblingID, 'type' : 'sibling'})
+
         self.notes = notes  # notes are optional
 
         try:
@@ -42,15 +47,21 @@ class DocNode:
         return node
 
     def graph_edges(self, config={}):
-        edges = []
-        for idx, parentID in enumerate(self.parentIDs):
-            edge = copy.copy(config)
-            edge["id"] = "{}_e{}".format(self.name, idx)
-            edge["source"] = parentID
-            edge["target"] = self.name
+        edge_type_map = {'parent': 'arrow',
+                         'sibling': 'dashed'}
 
-            edges.append(edge)
-        return edges
+        graph_edges = []
+        for idx, edge in enumerate(self.edges):
+            graph_edge = copy.copy(config)
+            graph_edge['id'] = '{}_e{}'.format(self.name, idx)
+            graph_edge['source'] = edge['id']
+            graph_edge['target'] = self.name
+
+            graph_edge['type'] = edge_type_map[edge['type']]
+
+            graph_edges.append(graph_edge)
+
+        return graph_edges
 
 
 def parse_docfile(filepath):
@@ -64,6 +75,7 @@ def parse_docfile(filepath):
 
     nameResult = re.search("@name:(.*)\n", text)
     parentResult = re.search("@parent[s]?:(.*)\n", text)
+    siblingResult = re.search("@sibling[s]?:(.*)\n", text)
     notesResult = re.search("@note[s]?:(.*)\n", text)
 
     if nameResult is None:
@@ -72,20 +84,24 @@ def parse_docfile(filepath):
     if len(name) == 0:
         return None
 
+    parents = []
     if parentResult is not None:
         parents = [p.strip() for p in parentResult.group(1).split(',')]
         parents = [p for p in parents if len(p) > 0]
-    else:
-        parents = []
 
+    siblings = []
+    if siblingResult is not None:
+        siblings = [s.strip() for s in siblingResult.group(1).split(',')]
+        siblings = [s for s in siblings if len(s) > 0]
+
+    notes = None
     if notesResult is not None:
         notes = notesResult.group(1).strip()
         notes = notes if len(notes) > 0 else None
-    else:
-        notes = None
 
     docnode = DocNode(name=name, filepath=filepath,
-                      parentIDs=parents, notes=notes)
+                      parentIDs=parents, siblingIDs=siblings,
+                      notes=notes)
     return docnode
 
 
@@ -134,8 +150,9 @@ class ColorAssigner:
             if not current_node.seen:
                 current_node.seen = True
                 node_path.append(current_node)
-                for parentID in node.parentIDs:
-                    unexamined.append(node_map[parentID])
+                for edge in node.edges:
+                    edgeID = edge['id']
+                    unexamined.append(node_map[edgeID])
 
             if current_node.color:
                 break
@@ -172,7 +189,7 @@ class ColorAssigner:
                 node.seen = True
 
                 # bubble up parents
-                unassigned += [node_map[parentID] for parentID in node.parentIDs]
+                unassigned += [node_map[e['id']] for e in node.edges]
 
 
 def main(args):
@@ -192,7 +209,6 @@ def main(args):
     for directory in directories:
         for root, dirs, files in os.walk(directory):
             for fname in files:
-                print(fname)
                 filecount += 1
 
                 path = os.path.join(root, fname)
@@ -204,14 +220,14 @@ def main(args):
                     continue
                 docfiles[docfile.name] = docfile
 
-    # validate all parents - make sure they actually exist
+    # validate all parents & siblings - make sure they actually exist
     for name in docfiles:
         docfile = docfiles[name]
-        verified_parents = []
-        for parentID in docfile.parentIDs:
-            if parentID in docfiles:
-                verified_parents.append(parentID)
-        docfile.parentIDs = verified_parents
+        verified_edges = []
+        for edge in docfile.edges:
+            if edge['id'] in docfiles:
+                verified_edges.append(edge)
+        docfile.edges = verified_edges
 
     ## assign colors to distinct segments
     ## we do this as follows:

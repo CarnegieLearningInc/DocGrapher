@@ -101,6 +101,9 @@
 <script src="lib/sigma.plugins.dragNodes.js"></script>
 <script src="lib/sigma.settings.js"></script>
 
+<script src="lib/sigma.canvas.edges.dashed.js"></script>
+<!-- <script src="lib/sigma.canvas.edges.dotted.js"></script> -->
+
 <script src="lib/worker.js"></script>
 <script src="lib/supervisor.js"></script>
 
@@ -134,10 +137,9 @@ s = new sigma({
         maxNodeSize: 10,
         minArrowSize: 10,
         maxArrowSize: 10,
-        defaultEdgeType: 'arrow',
         defaultNodeColor: '#ec5148',
         defaultEdgeColor: '#0000ff',
-        defaultEdgeType: 'arrow',
+        // defaultEdgeType: 'dashed',
         edgeColor: 'target',
         autoResize: false,
         autoRescale: true,

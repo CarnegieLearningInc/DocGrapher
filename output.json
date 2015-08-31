@@ -1,198 +1,97 @@
 {
     "edges": [
         {
-            "id": "Munger2012_e0",
-            "source": "Munger2011",
-            "target": "Munger2012",
-            "size": 3
+            "source": "SigRep",
+            "target": "TrendsReport_New",
+            "type": "arrow",
+            "size": 3,
+            "id": "TrendsReport_New_e0"
         },
         {
-            "id": "Munger2012_e1",
-            "source": "Munger2014",
-            "target": "Munger2012",
-            "size": 3
+            "source": "RemoveInactiveDumpStudents",
+            "target": "RemoveInactiveDumpStudents_Autosaved",
+            "type": "arrow",
+            "size": 3,
+            "id": "RemoveInactiveDumpStudents_Autosaved_e0"
         },
         {
-            "id": "R_DataFormatter_MiamiDade_e0",
-            "source": "R_DataFormatter",
-            "target": "R_DataFormatter_MiamiDade",
-            "size": 3
-        },
-        {
-            "id": "SigRepTest22_e0",
             "source": "SigRep",
             "target": "SigRepTest22",
-            "size": 3
+            "type": "arrow",
+            "size": 3,
+            "id": "SigRepTest22_e0"
         },
         {
-            "id": "Munger2013_e0",
-            "source": "Munger2012",
-            "target": "Munger2013",
-            "size": 3
-        },
-        {
-            "id": "R_DataFormatter_Duval_e0",
-            "source": "R_DataFormatter",
-            "target": "R_DataFormatter_Duval",
-            "size": 3
-        },
-        {
-            "id": "R_DataFormatter_MiamiCentralHS_e0",
-            "source": "R_DataFormatter_MiamiDade",
-            "target": "R_DataFormatter_MiamiCentralHS",
-            "size": 3
-        },
-        {
-            "id": "Munger2014_e0",
-            "source": "Munger2013",
-            "target": "Munger2014",
-            "size": 3
-        },
-        {
-            "id": "Py_UpdateDB_e0",
-            "source": "Py_QueryDB",
-            "target": "Py_UpdateDB",
-            "size": 3
-        },
-        {
-            "id": "Py_UpdateDB_e1",
-            "source": "Py_PushDB",
-            "target": "Py_UpdateDB",
-            "size": 3
-        },
-        {
-            "id": "Munger2015_e0",
-            "source": "Munger2014",
-            "target": "Munger2015",
-            "size": 3
+            "source": "SigRep",
+            "target": "NewFunction_RemovingStudents",
+            "type": "dashed",
+            "size": 3,
+            "id": "NewFunction_RemovingStudents_e0"
         }
     ],
     "nodes": [
         {
-            "color": "rgba(14, 39, 52, 1)",
-            "label": "R_DataFormatter",
-            "id": "R_DataFormatter",
-            "last_modified": "2015-08-31 11:30:09",
-            "notes": "Formats data from usage logs",
-            "filepath": "testfiles/data_formatter.R",
-            "size": 10
+            "label": "TrendsReport_New",
+            "color": "rgba(253, 56, 250, 1)",
+            "last_modified": "2015-08-31 13:25:55",
+            "size": 10,
+            "id": "TrendsReport_New",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/new_trends_report.R",
+            "notes": "Plot some trends, extracted and modified from SigRep (?)"
         },
         {
-            "color": "rgba(3, 116, 63, 1)",
-            "label": "Munger2012",
-            "id": "Munger2012",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Updates galore. Also minor bug fixes from the future (2014!)",
-            "filepath": "testfiles/mungers/2012_munger.java",
-            "size": 10
+            "label": "RemoveInactiveDumpStudents",
+            "color": "rgba(222, 241, 210, 1)",
+            "last_modified": "2015-08-31 13:03:40",
+            "size": 10,
+            "id": "RemoveInactiveDumpStudents",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/remove_inactive_dump_students.R",
+            "notes": "Remove students that are inactive or have been blacklisted"
         },
         {
-            "color": "rgba(172, 119, 250, 1)",
-            "label": "Py_QueryDB",
-            "id": "Py_QueryDB",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Provides API to query central database.",
-            "filepath": "testfiles/db_utils/db_querier.py",
-            "size": 10
+            "label": "RemoveInactiveDumpStudents_Autosaved",
+            "color": "rgba(222, 241, 210, 1)",
+            "last_modified": "2015-08-31 13:10:06",
+            "size": 10,
+            "id": "RemoveInactiveDumpStudents_Autosaved",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/remove_inactive_dump_students (Autosaved).R",
+            "notes": "This is a copy of its parent and should probably be deleted.."
         },
         {
-            "color": "rgba(153, 137, 81, 1)",
             "label": "SigRep",
+            "color": "rgba(253, 56, 250, 1)",
+            "last_modified": "2015-08-31 13:26:36",
+            "size": 10,
             "id": "SigRep",
-            "last_modified": "2015-08-31 12:33:46",
-            "notes": "School Number of School IDs",
             "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/sigRep.R",
-            "size": 10
+            "notes": "School Number of School IDs"
         },
         {
-            "color": "rgba(14, 39, 52, 1)",
-            "label": "R_DataFormatter_MiamiDade",
-            "id": "R_DataFormatter_MiamiDade",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Formats Miami Dade data, adds special class code handling",
-            "filepath": "testfiles/data_formatters/data_formatter_miamidade.R",
-            "size": 10
+            "label": "Roster",
+            "color": "rgba(15, 128, 63, 1)",
+            "last_modified": "2015-08-31 13:15:06",
+            "size": 10,
+            "id": "Roster",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/roster.r",
+            "notes": "Create a roster"
         },
         {
-            "color": "rgba(172, 119, 250, 1)",
-            "label": "Py_PushDB",
-            "id": "Py_PushDB",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "API to commit data to database.",
-            "filepath": "testfiles/db_utils/db_pusher.py",
-            "size": 10
-        },
-        {
-            "color": "rgba(3, 116, 63, 1)",
-            "label": "Munger2011",
-            "id": "Munger2011",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Munger munges data!",
-            "filepath": "testfiles/mungers/2011_munger.java",
-            "size": 10
-        },
-        {
-            "color": "rgba(153, 137, 81, 1)",
             "label": "SigRepTest22",
-            "id": "SigRepTest22",
+            "color": "rgba(253, 56, 250, 1)",
             "last_modified": "2015-08-31 12:34:24",
-            "notes": "Quick test of SigRep script",
+            "size": 10,
+            "id": "SigRepTest22",
             "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/test22.R",
-            "size": 10
+            "notes": "Quick test of SigRep script"
         },
         {
-            "color": "rgba(3, 116, 63, 1)",
-            "label": "Munger2013",
-            "id": "Munger2013",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Moar updates.",
-            "filepath": "testfiles/mungers/2013_munger.java",
-            "size": 10
-        },
-        {
-            "color": "rgba(14, 39, 52, 1)",
-            "label": "R_DataFormatter_Duval",
-            "id": "R_DataFormatter_Duval",
-            "last_modified": "2015-08-31 11:30:53",
-            "notes": "Formats Duval data, collapses several district files",
-            "filepath": "testfiles/data_formatters/data_formatter_duval.R",
-            "size": 10
-        },
-        {
-            "color": "rgba(14, 39, 52, 1)",
-            "label": "R_DataFormatter_MiamiCentralHS",
-            "id": "R_DataFormatter_MiamiCentralHS",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Miami Central has very strange classes - investigating with extra logging",
-            "filepath": "testfiles/data_formatters/data_formatter_miamicentral.R",
-            "size": 10
-        },
-        {
-            "color": "rgba(3, 116, 63, 1)",
-            "label": "Munger2014",
-            "id": "Munger2014",
-            "last_modified": "2015-08-31 11:33:17",
-            "notes": "Revamped munger completely. Tons of bug fixes.",
-            "filepath": "testfiles/mungers/2014_munger.java",
-            "size": 10
-        },
-        {
-            "color": "rgba(172, 119, 250, 1)",
-            "label": "Py_UpdateDB",
-            "id": "Py_UpdateDB",
-            "last_modified": "2015-08-31 11:30:50",
-            "notes": "Grabbed some QueryDB and PushDB code for testing an update DB. TODO: migrate code back into parent files.",
-            "filepath": "testfiles/db_utils/db_updater.py",
-            "size": 10
-        },
-        {
-            "color": "rgba(3, 116, 63, 1)",
-            "label": "Munger2015",
-            "id": "Munger2015",
-            "last_modified": "2015-08-31 11:33:27",
-            "notes": "Minor issues resolved from last year. Everything is cruising along :)",
-            "filepath": "testfiles/mungers/2015_munger.java",
-            "size": 10
+            "label": "NewFunction_RemovingStudents",
+            "color": "rgba(253, 56, 250, 1)",
+            "last_modified": "2015-08-31 14:03:25",
+            "size": 10,
+            "id": "NewFunction_RemovingStudents",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/new_functions.R",
+            "notes": "Some utility functions used in SigRep"
         }
     ]
 }

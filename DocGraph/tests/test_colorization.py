@@ -16,29 +16,34 @@ class ColorizationTests(unittest.TestCase):
         # subgraph 1
         # root parent with two children
         self.g1n1 = DocNode("g1n1", "/g1n1")
-        self.g1n2 = DocNode("g1n2", "/g1n2", ["g1n1"])
-        self.g1n3 = DocNode("g1n3", "/g1n3", ["g1n1"])
+        self.g1n2 = DocNode("g1n2", "/g1n2", parentIDs=["g1n1"])
+        self.g1n3 = DocNode("g1n3", "/g1n3", parentIDs=["g1n1"])
         self.g1_nodes = [self.g1n1, self.g1n2, self.g1n3]
         self.g1 = self.create_subgraph(self.g1_nodes)
 
         # subgraph 2
-        # one child, two parents
+        # one child, two parents, one sibling
         self.g2n1 = DocNode("g2n1", "/g2n1")
         self.g2n2 = DocNode("g2n2", "/g2n2")
-        self.g2n3 = DocNode("g2n3", "/g2n3", ["g2n1", "g2n2"])
-        self.g2_nodes = [self.g2n1, self.g2n2, self.g2n3]
+        self.g2n3 = DocNode("g2n3", "/g2n3", parentIDs=["g2n1", "g2n2"])
+        self.g2n4 = DocNode("g2n4", "/g2n4", siblingIDs=["g2n2"])
+        self.g2_nodes = [self.g2n1, self.g2n2, self.g2n3, self.g2n4]
         self.g2 = self.create_subgraph(self.g2_nodes)
 
         # subgraph 3
         # substantially more complex - loops & everything
         self.g3n1 = DocNode("g3n1", "/g3n1")
-        self.g3n2 = DocNode("g3n2", "/g3n2", ["g3n1", "g3n5"])
-        self.g3n3 = DocNode("g3n3", "/g3n3", ["g3n1"])
-        self.g3n4 = DocNode("g3n4", "/g3n4", ["g3n2", "g3n3"])
-        self.g3n5 = DocNode("g3n5", "/g3n5", ["g3n4"])
-        self.g3n6 = DocNode("g3n6", "/g3n6", ["g3n5"])
+        self.g3n2 = DocNode("g3n2", "/g3n2", parentIDs=["g3n1", "g3n5"])
+        self.g3n3 = DocNode("g3n3", "/g3n3", parentIDs=["g3n1"])
+        self.g3n4 = DocNode("g3n4", "/g3n4", parentIDs=["g3n2", "g3n3"])
+        self.g3n5 = DocNode("g3n5", "/g3n5", parentIDs=["g3n4"], siblingIDs=["g3n1"])
+        self.g3n6 = DocNode("g3n6", "/g3n6", parentIDs=["g3n5"])
+        self.g3n7 = DocNode("g3n7", "/g3n7", parentIDs=["g3n6"], siblingIDs=["g3n5"])
+        self.g3n8 = DocNode("g3n8", "/g3n8", siblingIDs=["g3n7"])
+        self.g3n9 = DocNode("g3n9", "/g3n9", siblingIDs=["g3n7"])
         self.g3_nodes = [self.g3n1, self.g3n2, self.g3n3,
-                         self.g3n4, self.g3n5, self.g3n6]
+                         self.g3n4, self.g3n5, self.g3n6,
+                         self.g3n7, self.g3n8, self.g3n9]
         self.g3 = self.create_subgraph(self.g3_nodes)
 
         self.assigner = ColorAssigner()
