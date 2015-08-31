@@ -68,26 +68,30 @@ def parse_docfile(filepath):
     return docfile
 
 
+# in the future, may want to get more intelligent with this...
+# --> http://stackoverflow.com/questions/470690/how-to-automatically-generate-n-distinct-colors
+# --> https://docs.python.org/2/library/colorsys.html
+# - may need to figure out how many subgraphs there are and then use HSV
 class ColorAssigner:
 
     def __init__(self):
-        pass
+        self.reserved_colors = ['#0000ff', 'rgb(0, 0, 255, 1)']
 
     def random_hex_color(self):
-        reserved_colors = ['#0000ff']
         color = None
-        while color is None or color in reserved_colors:
+        while color is None or color in self.reserved_colors:
             color = "#%06x" % random.randint(0, 0xFFFFFF)
+        self.reserved_colors.append(color)
         return color
 
     def random_rgba_color(self):
-        reserved_colors = ['rgba(0, 0, 255, 1)']
         color = None
-        while color is None or color in reserved_colors:
+        while color is None or color in self.reserved_colors:
             color = 'rgba({}, {}, {}, 1)'.format(
                 random.randint(0, 255),
                 random.randint(0, 255),
                 random.randint(0, 255))
+        self.reserved_colors.append(color)
         return color
 
     def all_colors_assigned(self, node_map):

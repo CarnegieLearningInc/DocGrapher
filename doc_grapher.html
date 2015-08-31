@@ -11,7 +11,8 @@
 
         /*hide the window*/
         position:fixed;
-        bottom:-270px;
+        /*bottom:-270px;*/
+        bottom:0px;
         right:0px;
 
         /*set the size and background color*/
@@ -50,9 +51,16 @@
     }
     #searchBox {
         position:fixed;
-        top:10px;
+        top:1%;
         width:80%;
+        height: 2em;
         margin-left:10%;
+        font-size: 1.5em;
+    }
+    #sliderquit {
+        position:absolute;
+        top:1px;
+        right:1px;
     }
 </style>
 </head>
@@ -83,6 +91,10 @@
 </div>
 <div id="slider">
     <div id="slidertitle"></div>
+    <div id="slidertext"></div>
+    <button id="sliderquit" type="button" class="btn btn-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
 </div>
 
 <script src="lib/sigma.min.js"></script>
@@ -108,7 +120,7 @@ var transparentize = function(rgba)
     return prefix + suffix;
 }
 
-var HIGHLIGHT_COLOR = 'rgba(0, 0, 255, 1)' // '#0000ff'
+var HIGHLIGHT_COLOR = 'rgba(255, 0, 0, 1)' // '#0000ff'
 var UNHIGHLIGHT_COLOR = 'rgba(150, 150, 150, 1)'
 
 s = new sigma({
@@ -216,12 +228,16 @@ sigma.parsers.json(
         s.bind('clickNode', function(e) {
             var node = e.data.node;
 
-            var msg = '<div id="slidertitle"><b>' + node.id + '</b><br><br></div>'
-            msg += '<b>Notes:</b> ' + node.notes + '<br><br>'
+            var slidertitle = document.getElementById('slidertitle');
+            var slidertext = document.getElementById('slidertext');
+            // document.getElementById('slider').innerHTML = msg;
+
+            slidertitle.innerHTML = '<b>' + node.id + '</b><br><br>';
+
+            var msg = '<b>Notes:</b> ' + node.notes + '<br><br>'
             msg += '<b>Path:</b> ' + node.filepath + '<br><br>'
             msg += '<b>Last Modified:</b> ' + node.last_modified
-
-            document.getElementById('slider').innerHTML = msg;
+            slidertext.innerHTML = msg;
 
             $('#slider').animate({
                 bottom: 0
@@ -240,7 +256,8 @@ sigma.parsers.json(
             s.refresh()
         });
 
-        s.bind('doubleClickStage', function(e) {
+        var dismiss_slider = function()
+        {
             $('#slider').animate({
                 bottom: -270
             }, {
@@ -253,7 +270,22 @@ sigma.parsers.json(
 
            searchBox.value = ''; 
 
-            s.refresh()
+           s.refresh()
+        }
+
+        s.bind('doubleClickStage', function(e) {
+            dismiss_slider();
+        });
+
+        $('#sliderquit').on('click', function(e) {
+            dismiss_slider();
+        });
+
+        $(document).keyup(function(e) {
+            if (e.keyCode == 27)
+            {
+                dismiss_slider();
+            }
         });
     });
 
