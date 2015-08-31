@@ -51,41 +51,6 @@ class ColorizationTests(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_g1n1_path(self):
-        color, path = self.assigner.get_path_to_colored_node(self.g1n1,
-                                                             self.g1)
-
-        self.assertIsNone(color)
-        self.assertEqual(path, [self.g1n1])
-
-        self.assertTrue(self.g1n1.seen)
-        self.assertFalse(self.g1n2.seen)
-        self.assertFalse(self.g1n3.seen)
-
-    def test_g1n2_path(self):
-        color, path = self.assigner.get_path_to_colored_node(self.g1n2,
-                                                             self.g1)
-
-        self.assertIsNone(color)
-        self.assertEqual(path, [self.g1n2, self.g1n1])
-
-        self.assertTrue(self.g1n1.seen)
-        self.assertTrue(self.g1n2.seen)
-        self.assertFalse(self.g1n3.seen)
-
-    def test_g1n3_path_withN1Colored(self):
-        self.g1n1.color = 'blue'
-
-        color, path = self.assigner.get_path_to_colored_node(self.g1n3,
-                                                             self.g1)
-
-        self.assertEqual(color, 'blue')
-        self.assertEqual(path, [self.g1n3, self.g1n1])
-
-        self.assertTrue(self.g1n1.seen)
-        self.assertFalse(self.g1n2.seen)
-        self.assertTrue(self.g1n3.seen)
-
     def test_g1_colorization(self):
         self.assigner.assign_colors(self.g1)
 

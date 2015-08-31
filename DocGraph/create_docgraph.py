@@ -33,6 +33,9 @@ class DocNode:
         self.color = None  # this is used for graphing
         self.seen = False  # this is used when assigning colors (before they've been assigned a color)
 
+        # for when we're assigning colors, we need to keep track of all parents, siblings, AND children
+        self.all_connections = set()
+
     def graph_node(self, config={}):
         node = copy.copy(config)
         node["id"] = self.name
@@ -136,7 +139,7 @@ class ColorAssigner:
         green *= 255
         blue *= 255
         color = 'rgba({}, {}, {}, 1)'.format(int(red), int(green), int(blue))
-        print('color: {}'.format(color))
+        # print('color: {}'.format(color))
         return color
 
     def all_colors_assigned(self, node_map):
@@ -144,28 +147,6 @@ class ColorAssigner:
             if node.color is None:
                 return False
         return True
-
-    def get_path_to_colored_node(self, node, node_map):
-        '''
-            Trace node's parents until we find a node with a color.
-            Then return the color and the path
-        '''
-        node_path = []
-        unexamined = [node]
-        while len(unexamined) > 0:
-            current_node = unexamined.pop()
-
-            if not current_node.seen:
-                current_node.seen = True
-                node_path.append(current_node)
-                for edge in node.edges:
-                    edgeID = edge['id']
-                    unexamined.append(node_map[edgeID])
-
-            if current_node.color:
-                break
-
-        return (current_node.color, node_path)
 
     def assign_colors(self, node_map):
         # while we're not done assigning colors
@@ -177,7 +158,20 @@ class ColorAssigner:
                     uncolored_node = node
                     break
 
-            color, node_path = self.get_path_to_colored_node(uncolored_node, node_map)
+            unexamined = [uncolored_node]
+            color = None
+            while len(unexamined) > 0:
+                examining_node = unexamined.pop()
+                if not examining_node.seen:
+                    examining_node.seen = True
+                    # unexamined += [node_map[e['id']] for e in examining_node.edges]
+                    unexamined += [node_map[c] for c in examining_node.all_connections]
+
+                if examining_node.color is not None:
+                    color = examining_node.color
+                    break
+
+            # color, node_path = self.get_path_to_colored_node(uncolored_node, node_map)
 
             if color is None:
                 # color = self.random_hex_color()
@@ -190,14 +184,15 @@ class ColorAssigner:
                 # since children take care of their parents
                 # we don't have to re-assign if we see a parent
                 # with the same color
-                if node.seen and node.color == color:
+                if node.color == color:
                     continue
 
                 node.color = color
                 node.seen = True
 
                 # bubble up parents
-                unassigned += [node_map[e['id']] for e in node.edges]
+                # unassigned += [node_map[e['id']] for e in node.edges]
+                unassigned += [node_map[c] for c in node.all_connections]
 
 
 def main(args):
@@ -236,6 +231,15 @@ def main(args):
             if edge['id'] in docfiles:
                 verified_edges.append(edge)
         docfile.edges = verified_edges
+
+    # each node should know about its parents, siblings, AND children
+    # which we put in the .all_connections property
+    for name in docfiles:
+        docfile = docfiles[name]
+        for edge in docfile.edges:
+            docfile.all_connections.add(edge['id'])
+
+            docfiles[edge['id']].all_connections.add(name)
 
     ## assign colors to distinct segments
     ## we do this as follows:
