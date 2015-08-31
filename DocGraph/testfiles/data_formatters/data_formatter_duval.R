@@ -1,6 +1,6 @@
 
-# @CLDocName:R_DataFormatter_Duval
-# @CLDocParent: R_DataFormatter
-# @CLDocNotes: Formats Duval data, collapses several district files
+# @name:R_DataFormatter_Duval
+# @parent: R_DataFormatter
+# @notes: Formats Duval data, collapses several district files
 
 x <- 6

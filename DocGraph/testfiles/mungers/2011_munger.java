@@ -1,4 +1,4 @@
 
-// @CLDocName: Munger2011
-// @CLDocParent: None
-// @CLDocNotes: Munger munges data!
+// @name: Munger2011
+// @parent: None
+// @notes: Munger munges data!

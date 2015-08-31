@@ -1,7 +1,7 @@
 
-# @CLDocName: Py_QueryDB
-# @CLDocParent: None
-# @CLDocNotes: Provides API to query central database.
+# @name: Py_QueryDB
+# @parent: None
+# @notes: Provides API to query central database.
 
 
 def hi(x):

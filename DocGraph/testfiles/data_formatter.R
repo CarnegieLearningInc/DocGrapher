@@ -1,6 +1,6 @@
 
-# @CLDocName:R_DataFormatter
-# @CLDocParent: 
-# @CLDocNotes: Formats data from usage logs
+# @name:R_DataFormatter
+# @parent: 
+# @notes: Formats data from usage logs
 
 x <- 5

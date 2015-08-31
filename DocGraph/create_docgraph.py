@@ -11,15 +11,18 @@ import datetime
 from pprint import pprint
 
 
-class CLDocFile:
+class DocNode:
     def __init__(self, name, filepath, parentIDs=[], notes=None):
         self.name = name  # name is unique
         self.filepath = filepath  # file name associated with this doc file
         self.parentIDs = parentIDs  # can have multiple parents, optional
         self.notes = notes  # notes are optional
 
-        statbuf = os.stat(self.filepath)
-        self.last_modified = str(datetime.datetime.fromtimestamp(statbuf.st_mtime))
+        try:
+            statbuf = os.stat(self.filepath)
+            self.last_modified = str(datetime.datetime.fromtimestamp(statbuf.st_mtime))
+        except:
+            self.last_modified = "Error: can't find file"
 
         self.color = None  # this is used for graphing
         self.seen = False  # this is used when assigning colors (before they've been assigned a color)
@@ -51,21 +54,35 @@ class CLDocFile:
 
 
 def parse_docfile(filepath):
-    text = open(filepath, 'r').read()
-    # print(text)
+    text = None
+    with open(filepath, 'r') as f:
+        text = f.read()
 
-    # TODO: grep around for CLDocName, CLDocParent, CLDocNotes
-    #       then create a CLDocFile object
-    nameResult = re.search("@CLDocName:(.*)\n", text)
-    parentResult = re.search("CLDocParent:(.*)\n", text)
-    notesResult = re.search("CLDocNotes:(.*)\n", text)
+    nameResult = re.search("@name:(.*)\n", text)
+    parentResult = re.search("@parent[s]?:(.*)\n", text)
+    notesResult = re.search("@note[s]?:(.*)\n", text)
 
+    if nameResult is None:
+        return None
     name = nameResult.group(1).strip()
-    parents = parentResult.group(1).strip().split(',')
-    notes = notesResult.group(1).strip()
+    if len(name) == 0:
+        return None
 
-    docfile = CLDocFile(name=name, filepath=filepath, parentIDs=parents, notes=notes)
-    return docfile
+    if parentResult is not None:
+        parents = [p.strip() for p in parentResult.group(1).split(',')]
+        parents = [p for p in parents if len(p) > 0]
+    else:
+        parents = []
+
+    if notesResult is not None:
+        notes = notesResult.group(1).strip()
+        notes = notes if len(notes) > 0 else None
+    else:
+        notes = None
+
+    docnode = DocNode(name=name, filepath=filepath,
+                      parentIDs=parents, notes=notes)
+    return docnode
 
 
 # in the future, may want to get more intelligent with this...
@@ -155,17 +172,27 @@ class ColorAssigner:
 
 
 def main(args):
-    dirs = args[1:]
-    print('dirs: {}'.format(dirs))
+    if len(args) < 3:
+        sys.stderr.write("usage: {} <directories> <output.json>\n".format(args[0]))
+        sys.stderr.write("\t<directories>: list of space-separated directories to examine\n")
+        sys.stderr.write("\t<output>: json file describing graphs, interpreted by doc_grapher.html\n")
+        sys.exit(1)
+
+    dirs = args[1:-1]
+    outfname = args[-1]
 
     # for each file in each directory, recursively on down,
-    # search for CLDoc annotations and create objects appropriately
+    # search for doc annotations and create objects appropriately
     docfiles = {}
     for root, dirs, files in os.walk(dirs[0]):
         for fname in files:
             path = os.path.join(root, fname)
             docfile = parse_docfile(path)
 
+            if docfile is None:
+                sys.stderr.write("Error! File is not annotated: {}\n"
+                                 .format(path))
+                continue
             docfiles[docfile.name] = docfile
 
     # validate all parents - make sure they actually exist
@@ -198,10 +225,14 @@ def main(args):
         nodes.append(docfile.graph_node(node_config))
         edges += docfile.graph_edges(edge_config)
 
+    if len(nodes) == 0:
+        sys.stderr.write("No annotated files found! Not writing output file.\n")
+        sys.exit(1)
+
     graph = {'nodes': nodes, 'edges': edges}
     # pprint(graph)
 
-    with open('../output.json', 'w') as f:
+    with open(outfname, 'w') as f:
         json.dump(graph, f, indent=4)
 
 

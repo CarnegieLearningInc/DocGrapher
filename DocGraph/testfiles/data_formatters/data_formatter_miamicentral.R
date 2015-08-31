@@ -1,4 +1,4 @@
 
-# @CLDocName: R_DataFormatter_MiamiCentralHS
-# @CLDocParent: R_DataFormatter_MiamiDade
-# @CLDocNotes: Miami Central has very strange classes - investigating with extra logging
+# @name: R_DataFormatter_MiamiCentralHS
+# @parent: R_DataFormatter_MiamiDade
+# @notes: Miami Central has very strange classes - investigating with extra logging

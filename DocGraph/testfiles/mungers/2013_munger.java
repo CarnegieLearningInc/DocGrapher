@@ -1,4 +1,4 @@
 
-// @CLDocName: Munger2013
-// @CLDocParent: Munger2012
-// @CLDocNotes: Moar updates.
+// @name: Munger2013
+// @parent: Munger2012
+// @notes: Moar updates.

@@ -1,4 +1,4 @@
 
-// @CLDocName: Munger2014
-// @CLDocParent: Munger2013
-// @CLDocNotes: Revamped munger completely. Tons of bug fixes.
+// @name: Munger2014
+// @parent: Munger2013
+// @notes: Revamped munger completely. Tons of bug fixes.

@@ -1,8 +1,8 @@
 
 
-# @CLDocName: Py_PushDB
-# @CLDocParent: None
-# @CLDocNotes: API to commit data to database.
+# @name: Py_PushDB
+# @parent: None
+# @notes: API to commit data to database.
 
 
 def bye(x):
