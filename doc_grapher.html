@@ -86,7 +86,7 @@
     <input id="searchBox" type="text" name="searchBox">
 </div> -->
 <div class="form-group">
-<input id="searchBox" type="text" class="form-control" placeholder="Search">
+    <input id="searchBox" type="text" class="form-control" placeholder="Search">
 </div>
 <div id="slider">
     <div id="slidertitle"></div>
@@ -280,10 +280,15 @@ sigma.parsers.json(
             dismiss_slider();
         });
 
-        $(document).keyup(function(e) {
+        $(document).keydown(function(e) {
             if (e.keyCode == 27)
             {
                 dismiss_slider();
+            }
+            else if ((e.ctrlKey | e.metaKey) && e.keyCode == 70)
+            {
+                $('#searchBox').focus();
+                e.preventDefault();
             }
         });
     });
