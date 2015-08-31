@@ -7,6 +7,7 @@ import json
 import os
 import random
 import datetime
+import colorsys
 
 # from pprint import pprint
 
@@ -112,7 +113,10 @@ def parse_docfile(filepath):
 class ColorAssigner:
 
     def __init__(self):
-        self.reserved_colors = ['#0000ff', 'rgb(0, 0, 255, 1)']
+        self.reserved_colors = []
+        self.latest_hue = 0
+        self.latest_lightness = 0
+        self.latest_saturation = 0
 
     def random_hex_color(self):
         color = None
@@ -122,13 +126,17 @@ class ColorAssigner:
         return color
 
     def random_rgba_color(self):
-        color = None
-        while color is None or color in self.reserved_colors:
-            color = 'rgba({}, {}, {}, 1)'.format(
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255))
-        self.reserved_colors.append(color)
+        self.latest_hue = (self.latest_hue + .13) % 1
+        self.latest_lightness = (self.latest_lightness + .12) % .3
+        self.latest_saturation = (self.latest_saturation + .11) % .3
+        red, green, blue = colorsys.hls_to_rgb(self.latest_hue,
+                                               .4 + self.latest_lightness,
+                                               .4 + self.latest_saturation)
+        red *= 255
+        green *= 255
+        blue *= 255
+        color = 'rgba({}, {}, {}, 1)'.format(int(red), int(green), int(blue))
+        print('color: {}'.format(color))
         return color
 
     def all_colors_assigned(self, node_map):
@@ -215,8 +223,8 @@ def main(args):
                 docfile = parse_docfile(path)
 
                 if docfile is None:
-                    sys.stderr.write("Error! File is not annotated: {}\n"
-                                     .format(path))
+                    # sys.stderr.write("Error! File is not annotated: {}\n"
+                    #                  .format(path))
                     continue
                 docfiles[docfile.name] = docfile
 
