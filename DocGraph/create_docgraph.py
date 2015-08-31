@@ -8,7 +8,7 @@ import os
 import random
 import datetime
 
-from pprint import pprint
+# from pprint import pprint
 
 
 class DocNode:
@@ -56,7 +56,11 @@ class DocNode:
 def parse_docfile(filepath):
     text = None
     with open(filepath, 'r') as f:
-        text = f.read()
+        try:
+            text = f.read()
+        except UnicodeDecodeError:
+            # if we can't read file, can't produce docnode
+            return None
 
     nameResult = re.search("@name:(.*)\n", text)
     parentResult = re.search("@parent[s]?:(.*)\n", text)
@@ -178,22 +182,27 @@ def main(args):
         sys.stderr.write("\t<output>: json file describing graphs, interpreted by doc_grapher.html\n")
         sys.exit(1)
 
-    dirs = args[1:-1]
+    directories = args[1:-1]
     outfname = args[-1]
 
     # for each file in each directory, recursively on down,
     # search for doc annotations and create objects appropriately
     docfiles = {}
-    for root, dirs, files in os.walk(dirs[0]):
-        for fname in files:
-            path = os.path.join(root, fname)
-            docfile = parse_docfile(path)
+    filecount = 0
+    for directory in directories:
+        for root, dirs, files in os.walk(directory):
+            for fname in files:
+                print(fname)
+                filecount += 1
 
-            if docfile is None:
-                sys.stderr.write("Error! File is not annotated: {}\n"
-                                 .format(path))
-                continue
-            docfiles[docfile.name] = docfile
+                path = os.path.join(root, fname)
+                docfile = parse_docfile(path)
+
+                if docfile is None:
+                    sys.stderr.write("Error! File is not annotated: {}\n"
+                                     .format(path))
+                    continue
+                docfiles[docfile.name] = docfile
 
     # validate all parents - make sure they actually exist
     for name in docfiles:
@@ -229,6 +238,8 @@ def main(args):
         sys.stderr.write("No annotated files found! Not writing output file.\n")
         sys.exit(1)
 
+    print("Extracted {} nodes with {} edges from {} files"
+          .format(len(nodes), len(edges), filecount))
     graph = {'nodes': nodes, 'edges': edges}
     # pprint(graph)
 

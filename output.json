@@ -1,174 +1,198 @@
 {
-    "nodes": [
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "Py_QueryDB",
-            "notes": "Provides API to query central database.",
-            "color": "rgba(219, 36, 169, 1)",
-            "filepath": "testfiles/db_utils/db_querier.py",
-            "size": 10,
-            "id": "Py_QueryDB"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "R_DataFormatter_MiamiDade",
-            "notes": "Formats Miami Dade data, adds special class code handling",
-            "color": "rgba(24, 242, 226, 1)",
-            "filepath": "testfiles/data_formatters/data_formatter_miamidade.R",
-            "size": 10,
-            "id": "R_DataFormatter_MiamiDade"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "R_DataFormatter_MiamiCentralHS",
-            "notes": "Miami Central has very strange classes - investigating with extra logging",
-            "color": "rgba(24, 242, 226, 1)",
-            "filepath": "testfiles/data_formatters/data_formatter_miamicentral.R",
-            "size": 10,
-            "id": "R_DataFormatter_MiamiCentralHS"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "Munger2011",
-            "notes": "Munger munges data!",
-            "color": "rgba(75, 7, 83, 1)",
-            "filepath": "testfiles/mungers/2011_munger.java",
-            "size": 10,
-            "id": "Munger2011"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "Munger2012",
-            "notes": "Updates galore. Also minor bug fixes from the future (2014!)",
-            "color": "rgba(75, 7, 83, 1)",
-            "filepath": "testfiles/mungers/2012_munger.java",
-            "size": 10,
-            "id": "Munger2012"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "Py_UpdateDB",
-            "notes": "Grabbed some QueryDB and PushDB code for testing an update DB. TODO: migrate code back into parent files.",
-            "color": "rgba(219, 36, 169, 1)",
-            "filepath": "testfiles/db_utils/db_updater.py",
-            "size": 10,
-            "id": "Py_UpdateDB"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "Py_PushDB",
-            "notes": "API to commit data to database.",
-            "color": "rgba(219, 36, 169, 1)",
-            "filepath": "testfiles/db_utils/db_pusher.py",
-            "size": 10,
-            "id": "Py_PushDB"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:53",
-            "label": "R_DataFormatter_Duval",
-            "notes": "Formats Duval data, collapses several district files",
-            "color": "rgba(24, 242, 226, 1)",
-            "filepath": "testfiles/data_formatters/data_formatter_duval.R",
-            "size": 10,
-            "id": "R_DataFormatter_Duval"
-        },
-        {
-            "last_modified": "2015-08-31 11:33:27",
-            "label": "Munger2015",
-            "notes": "Minor issues resolved from last year. Everything is cruising along :)",
-            "color": "rgba(75, 7, 83, 1)",
-            "filepath": "testfiles/mungers/2015_munger.java",
-            "size": 10,
-            "id": "Munger2015"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:50",
-            "label": "Munger2013",
-            "notes": "Moar updates.",
-            "color": "rgba(75, 7, 83, 1)",
-            "filepath": "testfiles/mungers/2013_munger.java",
-            "size": 10,
-            "id": "Munger2013"
-        },
-        {
-            "last_modified": "2015-08-31 11:33:17",
-            "label": "Munger2014",
-            "notes": "Revamped munger completely. Tons of bug fixes.",
-            "color": "rgba(75, 7, 83, 1)",
-            "filepath": "testfiles/mungers/2014_munger.java",
-            "size": 10,
-            "id": "Munger2014"
-        },
-        {
-            "last_modified": "2015-08-31 11:30:09",
-            "label": "R_DataFormatter",
-            "notes": "Formats data from usage logs",
-            "color": "rgba(24, 242, 226, 1)",
-            "filepath": "testfiles/data_formatter.R",
-            "size": 10,
-            "id": "R_DataFormatter"
-        }
-    ],
     "edges": [
         {
-            "target": "R_DataFormatter_MiamiDade",
-            "source": "R_DataFormatter",
-            "id": "R_DataFormatter_MiamiDade_e0",
-            "size": 3
-        },
-        {
-            "target": "R_DataFormatter_MiamiCentralHS",
-            "source": "R_DataFormatter_MiamiDade",
-            "id": "R_DataFormatter_MiamiCentralHS_e0",
-            "size": 3
-        },
-        {
-            "target": "Munger2012",
-            "source": "Munger2011",
             "id": "Munger2012_e0",
-            "size": 3
-        },
-        {
+            "source": "Munger2011",
             "target": "Munger2012",
-            "source": "Munger2014",
+            "size": 3
+        },
+        {
             "id": "Munger2012_e1",
-            "size": 3
-        },
-        {
-            "target": "Py_UpdateDB",
-            "source": "Py_QueryDB",
-            "id": "Py_UpdateDB_e0",
-            "size": 3
-        },
-        {
-            "target": "Py_UpdateDB",
-            "source": "Py_PushDB",
-            "id": "Py_UpdateDB_e1",
-            "size": 3
-        },
-        {
-            "target": "R_DataFormatter_Duval",
-            "source": "R_DataFormatter",
-            "id": "R_DataFormatter_Duval_e0",
-            "size": 3
-        },
-        {
-            "target": "Munger2015",
             "source": "Munger2014",
-            "id": "Munger2015_e0",
+            "target": "Munger2012",
             "size": 3
         },
         {
-            "target": "Munger2013",
-            "source": "Munger2012",
+            "id": "R_DataFormatter_MiamiDade_e0",
+            "source": "R_DataFormatter",
+            "target": "R_DataFormatter_MiamiDade",
+            "size": 3
+        },
+        {
+            "id": "SigRepTest22_e0",
+            "source": "SigRep",
+            "target": "SigRepTest22",
+            "size": 3
+        },
+        {
             "id": "Munger2013_e0",
+            "source": "Munger2012",
+            "target": "Munger2013",
             "size": 3
         },
         {
-            "target": "Munger2014",
-            "source": "Munger2013",
-            "id": "Munger2014_e0",
+            "id": "R_DataFormatter_Duval_e0",
+            "source": "R_DataFormatter",
+            "target": "R_DataFormatter_Duval",
             "size": 3
+        },
+        {
+            "id": "R_DataFormatter_MiamiCentralHS_e0",
+            "source": "R_DataFormatter_MiamiDade",
+            "target": "R_DataFormatter_MiamiCentralHS",
+            "size": 3
+        },
+        {
+            "id": "Munger2014_e0",
+            "source": "Munger2013",
+            "target": "Munger2014",
+            "size": 3
+        },
+        {
+            "id": "Py_UpdateDB_e0",
+            "source": "Py_QueryDB",
+            "target": "Py_UpdateDB",
+            "size": 3
+        },
+        {
+            "id": "Py_UpdateDB_e1",
+            "source": "Py_PushDB",
+            "target": "Py_UpdateDB",
+            "size": 3
+        },
+        {
+            "id": "Munger2015_e0",
+            "source": "Munger2014",
+            "target": "Munger2015",
+            "size": 3
+        }
+    ],
+    "nodes": [
+        {
+            "color": "rgba(14, 39, 52, 1)",
+            "label": "R_DataFormatter",
+            "id": "R_DataFormatter",
+            "last_modified": "2015-08-31 11:30:09",
+            "notes": "Formats data from usage logs",
+            "filepath": "testfiles/data_formatter.R",
+            "size": 10
+        },
+        {
+            "color": "rgba(3, 116, 63, 1)",
+            "label": "Munger2012",
+            "id": "Munger2012",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Updates galore. Also minor bug fixes from the future (2014!)",
+            "filepath": "testfiles/mungers/2012_munger.java",
+            "size": 10
+        },
+        {
+            "color": "rgba(172, 119, 250, 1)",
+            "label": "Py_QueryDB",
+            "id": "Py_QueryDB",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Provides API to query central database.",
+            "filepath": "testfiles/db_utils/db_querier.py",
+            "size": 10
+        },
+        {
+            "color": "rgba(153, 137, 81, 1)",
+            "label": "SigRep",
+            "id": "SigRep",
+            "last_modified": "2015-08-31 12:33:46",
+            "notes": "School Number of School IDs",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/sigRep.R",
+            "size": 10
+        },
+        {
+            "color": "rgba(14, 39, 52, 1)",
+            "label": "R_DataFormatter_MiamiDade",
+            "id": "R_DataFormatter_MiamiDade",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Formats Miami Dade data, adds special class code handling",
+            "filepath": "testfiles/data_formatters/data_formatter_miamidade.R",
+            "size": 10
+        },
+        {
+            "color": "rgba(172, 119, 250, 1)",
+            "label": "Py_PushDB",
+            "id": "Py_PushDB",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "API to commit data to database.",
+            "filepath": "testfiles/db_utils/db_pusher.py",
+            "size": 10
+        },
+        {
+            "color": "rgba(3, 116, 63, 1)",
+            "label": "Munger2011",
+            "id": "Munger2011",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Munger munges data!",
+            "filepath": "testfiles/mungers/2011_munger.java",
+            "size": 10
+        },
+        {
+            "color": "rgba(153, 137, 81, 1)",
+            "label": "SigRepTest22",
+            "id": "SigRepTest22",
+            "last_modified": "2015-08-31 12:34:24",
+            "notes": "Quick test of SigRep script",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/test22.R",
+            "size": 10
+        },
+        {
+            "color": "rgba(3, 116, 63, 1)",
+            "label": "Munger2013",
+            "id": "Munger2013",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Moar updates.",
+            "filepath": "testfiles/mungers/2013_munger.java",
+            "size": 10
+        },
+        {
+            "color": "rgba(14, 39, 52, 1)",
+            "label": "R_DataFormatter_Duval",
+            "id": "R_DataFormatter_Duval",
+            "last_modified": "2015-08-31 11:30:53",
+            "notes": "Formats Duval data, collapses several district files",
+            "filepath": "testfiles/data_formatters/data_formatter_duval.R",
+            "size": 10
+        },
+        {
+            "color": "rgba(14, 39, 52, 1)",
+            "label": "R_DataFormatter_MiamiCentralHS",
+            "id": "R_DataFormatter_MiamiCentralHS",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Miami Central has very strange classes - investigating with extra logging",
+            "filepath": "testfiles/data_formatters/data_formatter_miamicentral.R",
+            "size": 10
+        },
+        {
+            "color": "rgba(3, 116, 63, 1)",
+            "label": "Munger2014",
+            "id": "Munger2014",
+            "last_modified": "2015-08-31 11:33:17",
+            "notes": "Revamped munger completely. Tons of bug fixes.",
+            "filepath": "testfiles/mungers/2014_munger.java",
+            "size": 10
+        },
+        {
+            "color": "rgba(172, 119, 250, 1)",
+            "label": "Py_UpdateDB",
+            "id": "Py_UpdateDB",
+            "last_modified": "2015-08-31 11:30:50",
+            "notes": "Grabbed some QueryDB and PushDB code for testing an update DB. TODO: migrate code back into parent files.",
+            "filepath": "testfiles/db_utils/db_updater.py",
+            "size": 10
+        },
+        {
+            "color": "rgba(3, 116, 63, 1)",
+            "label": "Munger2015",
+            "id": "Munger2015",
+            "last_modified": "2015-08-31 11:33:27",
+            "notes": "Minor issues resolved from last year. Everything is cruising along :)",
+            "filepath": "testfiles/mungers/2015_munger.java",
+            "size": 10
         }
     ]
 }
