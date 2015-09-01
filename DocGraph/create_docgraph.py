@@ -27,7 +27,8 @@ class DocNode:
 
         try:
             statbuf = os.stat(self.filepath)
-            self.last_modified = str(datetime.datetime.fromtimestamp(statbuf.st_mtime))
+            date = datetime.datetime.fromtimestamp(statbuf.st_mtime)
+            self.last_modified = date.strftime('%b %d, %Y @ %H:%M')
         except:
             self.last_modified = "Error: can't find file"
 

@@ -108,6 +108,7 @@
 <script src="lib/supervisor.js"></script>
 
 <script>
+// disable right-click
 $('#container').bind('contextmenu', function(e) {
     return false;
 });
@@ -128,6 +129,21 @@ var transparentize = function(rgba)
 
 var HIGHLIGHT_COLOR = 'rgba(255, 0, 0, 1)' // '#0000ff'
 var UNHIGHLIGHT_COLOR = 'rgba(150, 150, 150, 1)'
+
+// Add a method to the graph model that returns an
+// object with every neighbors of a node inside:
+sigma.classes.graph.addMethod('neighbors', function(nodeId) {
+    var k,
+    neighbors = [],
+    index = this.allNeighborsIndex[nodeId] || {};
+
+    for (k in index)
+    {
+        neighbors.push(this.nodesIndex[k]);
+    }
+
+    return neighbors;
+});
 
 s = new sigma({
     graph: g,
@@ -169,6 +185,7 @@ sigma.parsers.json(
             node.y = Math.random();
 
             node.originalColor = node.color;
+            node.originalLabel = node.label
 
             node.lowerLabel = node.label.toLowerCase();
         });
@@ -257,6 +274,15 @@ sigma.parsers.json(
 
             nodes.forEach(function(n) {
                 n.color = n == node ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
+
+                n.label = n.originalLabel;
+            });
+
+            var neighbors = s.graph.neighbors(node.id);
+            neighbors.push(node);
+            neighbors.forEach(function(n) {
+                n.label = n.originalLabel + ' (' + n.last_modified + ')'
+                console.log(n.last_modified);
             });
 
             s.refresh()
@@ -272,6 +298,7 @@ sigma.parsers.json(
 
             nodes.forEach(function(n) {
                 n.color = n.originalColor;
+                n.label = n.originalLabel;
             });
 
            searchBox.value = ''; 
