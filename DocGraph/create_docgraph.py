@@ -8,6 +8,7 @@ import os
 import random
 import datetime
 import colorsys
+import collections
 
 # from pprint import pprint
 
@@ -129,9 +130,9 @@ class ColorAssigner:
         return color
 
     def random_rgba_color(self):
-        self.latest_hue = (self.latest_hue + .13) % 1
-        self.latest_lightness = (self.latest_lightness + .12) % .3
-        self.latest_saturation = (self.latest_saturation + .11) % .3
+        self.latest_hue = (self.latest_hue + .19) % 1
+        self.latest_lightness = (self.latest_lightness + .17) % .3
+        self.latest_saturation = (self.latest_saturation + .14) % .3
         red, green, blue = colorsys.hls_to_rgb(self.latest_hue,
                                                .4 + self.latest_lightness,
                                                .4 + self.latest_saturation)
@@ -207,7 +208,7 @@ def main(args):
 
     # for each file in each directory, recursively on down,
     # search for doc annotations and create objects appropriately
-    docfiles = {}
+    docnodes = collections.OrderedDict()
     filecount = 0
     for directory in directories:
         for root, dirs, files in os.walk(directory):
@@ -215,31 +216,31 @@ def main(args):
                 filecount += 1
 
                 path = os.path.join(root, fname)
-                docfile = parse_docfile(path)
+                docnode = parse_docfile(path)
 
-                if docfile is None:
+                if docnode is None:
                     # sys.stderr.write("Error! File is not annotated: {}\n"
                     #                  .format(path))
                     continue
-                docfiles[docfile.name] = docfile
+                docnodes[docnode.name] = docnode
 
     # validate all parents & siblings - make sure they actually exist
-    for name in docfiles:
-        docfile = docfiles[name]
+    for name in docnodes:
+        docnode = docnodes[name]
         verified_edges = []
-        for edge in docfile.edges:
-            if edge['id'] in docfiles:
+        for edge in docnode.edges:
+            if edge['id'] in docnodes:
                 verified_edges.append(edge)
-        docfile.edges = verified_edges
+        docnode.edges = verified_edges
 
     # each node should know about its parents, siblings, AND children
     # which we put in the .all_connections property
-    for name in docfiles:
-        docfile = docfiles[name]
-        for edge in docfile.edges:
-            docfile.all_connections.add(edge['id'])
+    for name in docnodes:
+        docnode = docnodes[name]
+        for edge in docnode.edges:
+            docnode.all_connections.add(edge['id'])
 
-            docfiles[edge['id']].all_connections.add(name)
+            docnodes[edge['id']].all_connections.add(name)
 
     ## assign colors to distinct segments
     ## we do this as follows:
@@ -248,19 +249,18 @@ def main(args):
     #### if we reach the top of the chain without having assigned a color, assign a color and bubble down
     #### IMPORTANT: remember to mark nodes as "seen" as we do this!
     ####            (because we don't necessary want to force links as a tree structure)
-    # assign_colors(docfiles)
     assigner = ColorAssigner()
-    assigner.assign_colors(docfiles)
+    assigner.assign_colors(docnodes)
 
     nodes = []
     edges = []
     node_config = {'size': 10}
     edge_config = {'size': 3}
-    for name in docfiles:
-        docfile = docfiles[name]
+    for name in docnodes:
+        docnode = docnodes[name]
 
-        nodes.append(docfile.graph_node(node_config))
-        edges += docfile.graph_edges(edge_config)
+        nodes.append(docnode.graph_node(node_config))
+        edges += docnode.graph_edges(edge_config)
 
     if len(nodes) == 0:
         sys.stderr.write("No annotated files found! Not writing output file.\n")

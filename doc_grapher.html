@@ -108,6 +108,10 @@
 <script src="lib/supervisor.js"></script>
 
 <script>
+$('#container').bind('contextmenu', function(e) {
+    return false;
+});
+
 var g = {
     nodes: [],
     edges: []
@@ -238,7 +242,7 @@ sigma.parsers.json(
             var msg = '<b>Notes:</b> ' + node.notes + '<br><br>'
             msg += '<b>Path:</b> ' + node.filepath + '<br><br>'
             msg += '<b>Last Modified:</b> ' + node.last_modified + '<br>'
-            msg += '<b>Color:</b> ' + node.originalColor
+            // msg += '<b>Color:</b> ' + node.originalColor
             slidertext.innerHTML = msg;
 
             $('#slider').animate({

@@ -1,248 +1,248 @@
 {
     "edges": [
         {
-            "id": "iPrepScript_e0",
-            "target": "iPrepScript",
-            "source": "SigRep",
-            "size": 3,
-            "type": "arrow"
-        },
-        {
-            "id": "TrendsReport_New_e0",
-            "target": "TrendsReport_New",
-            "source": "SigRep",
-            "size": 3,
-            "type": "arrow"
-        },
-        {
+            "type": "dashed",
             "id": "AdminAnalysis_e0",
-            "target": "AdminAnalysis",
             "source": "DB_Access",
             "size": 3,
-            "type": "dashed"
+            "target": "AdminAnalysis"
         },
         {
-            "id": "GenerateSig_e0",
-            "target": "GenerateSig",
+            "type": "arrow",
+            "id": "CaslSchoolTrends_e0",
             "source": "AdminAnalysis",
             "size": 3,
-            "type": "arrow"
+            "target": "CaslSchoolTrends"
         },
         {
-            "id": "GenerateSig_e1",
-            "target": "GenerateSig",
+            "type": "dashed",
+            "id": "CaslSchoolTrends_e1",
             "source": "NewFunction_RemovingStudents",
             "size": 3,
-            "type": "dashed"
+            "target": "CaslSchoolTrends"
         },
         {
-            "id": "GenerateSig_e2",
-            "target": "GenerateSig",
+            "type": "dashed",
+            "id": "CaslSchoolTrends_e2",
             "source": "DB_Access",
             "size": 3,
-            "type": "dashed"
+            "target": "CaslSchoolTrends"
         },
         {
+            "type": "arrow",
+            "id": "GenerateSig_e0",
+            "source": "AdminAnalysis",
+            "size": 3,
+            "target": "GenerateSig"
+        },
+        {
+            "type": "dashed",
+            "id": "GenerateSig_e1",
+            "source": "NewFunction_RemovingStudents",
+            "size": 3,
+            "target": "GenerateSig"
+        },
+        {
+            "type": "dashed",
+            "id": "GenerateSig_e2",
+            "source": "DB_Access",
+            "size": 3,
+            "target": "GenerateSig"
+        },
+        {
+            "type": "dashed",
             "id": "GenerateSig_e3",
-            "target": "GenerateSig",
             "source": "SigRep",
             "size": 3,
-            "type": "dashed"
+            "target": "GenerateSig"
         },
         {
-            "id": "CaslSchoolTrends_e0",
-            "target": "CaslSchoolTrends",
-            "source": "AdminAnalysis",
+            "type": "arrow",
+            "id": "iPrepScript_e0",
+            "source": "SigRep",
             "size": 3,
-            "type": "arrow"
+            "target": "iPrepScript"
         },
         {
-            "id": "CaslSchoolTrends_e1",
-            "target": "CaslSchoolTrends",
-            "source": "NewFunction_RemovingStudents",
-            "size": 3,
-            "type": "dashed"
-        },
-        {
-            "id": "CaslSchoolTrends_e2",
-            "target": "CaslSchoolTrends",
-            "source": "DB_Access",
-            "size": 3,
-            "type": "dashed"
-        },
-        {
+            "type": "arrow",
             "id": "MathiaScript_e0",
-            "target": "MathiaScript",
             "source": "MathiaContest",
             "size": 3,
-            "type": "arrow"
+            "target": "MathiaScript"
         },
         {
-            "id": "SigRepTest22_e0",
-            "target": "SigRepTest22",
-            "source": "SigRep",
-            "size": 3,
-            "type": "arrow"
-        },
-        {
+            "type": "dashed",
             "id": "NewFunction_RemovingStudents_e0",
-            "target": "NewFunction_RemovingStudents",
             "source": "SigRep",
             "size": 3,
-            "type": "dashed"
+            "target": "NewFunction_RemovingStudents"
         },
         {
+            "type": "arrow",
+            "id": "TrendsReport_New_e0",
+            "source": "SigRep",
+            "size": 3,
+            "target": "TrendsReport_New"
+        },
+        {
+            "type": "arrow",
             "id": "RemoveInactiveDumpStudents_Autosaved_e0",
-            "target": "RemoveInactiveDumpStudents_Autosaved",
             "source": "RemoveInactiveDumpStudents",
             "size": 3,
-            "type": "arrow"
+            "target": "RemoveInactiveDumpStudents_Autosaved"
+        },
+        {
+            "type": "arrow",
+            "id": "SigRepTest22_e0",
+            "source": "SigRep",
+            "size": 3,
+            "target": "SigRepTest22"
         }
     ],
     "nodes": [
         {
-            "notes": "Main Sig Report script",
-            "id": "SigRep",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/sigRep.R",
-            "last_modified": "2015-08-31 14:52:56",
-            "size": 10,
-            "label": "SigRep",
-            "color": "rgba(195, 167, 70, 1)"
-        },
-        {
+            "color": "rgba(187, 204, 86, 1)",
+            "last_modified": "2015-08-31 16:54:59",
             "notes": "Debugging ADB something-or-another?",
-            "id": "ADB_Debug",
             "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/adb-debug.R",
-            "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
+            "id": "ADB_Debug",
             "label": "ADB_Debug",
-            "color": "rgba(156, 220, 106, 1)"
+            "size": 10
         },
         {
-            "notes": "Uses Fabric to streamline use of SSH from scripts/applications",
-            "id": "FabFile",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/fabfile.py",
-            "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
-            "label": "FabFile",
-            "color": "rgba(66, 167, 101, 1)"
-        },
-        {
-            "notes": "Report on iPrep schools. Relies heavily on @SigRep script.",
-            "id": "iPrepScript",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/iprep_script.R",
-            "last_modified": "2015-08-31 14:54:39",
-            "size": 10,
-            "label": "iPrepScript",
-            "color": "rgba(195, 167, 70, 1)"
-        },
-        {
-            "notes": "Plot some trends, extracted and modified from SigRep (?)",
-            "id": "TrendsReport_New",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/new_trends_report.R",
-            "last_modified": "2015-08-31 13:25:55",
-            "size": 10,
-            "label": "TrendsReport_New",
-            "color": "rgba(195, 167, 70, 1)"
-        },
-        {
-            "notes": "Create a roster",
-            "id": "Roster",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/roster.r",
-            "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
-            "label": "Roster",
-            "color": "rgba(90, 191, 205, 1)"
-        },
-        {
-            "notes": "Provides utilities to analyze admin db",
-            "id": "AdminAnalysis",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/admin-analysis.r",
+            "color": "rgba(35, 188, 78, 1)",
             "last_modified": "2015-08-31 15:08:23",
-            "size": 10,
+            "notes": "Provides utilities to analyze admin db",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/admin-analysis.r",
+            "id": "AdminAnalysis",
             "label": "AdminAnalysis",
-            "color": "rgba(195, 167, 70, 1)"
+            "size": 10
         },
         {
-            "notes": "Generates Sig reports, I think?",
-            "id": "GenerateSig",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/generate.sig.R",
-            "last_modified": "2015-08-31 15:11:02",
-            "size": 10,
-            "label": "GenerateSig",
-            "color": "rgba(195, 167, 70, 1)"
-        },
-        {
-            "notes": "School Trends for CASL work",
-            "id": "CaslSchoolTrends",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/casl_school_trends.R",
+            "color": "rgba(35, 188, 78, 1)",
             "last_modified": "2015-08-31 15:09:51",
-            "size": 10,
+            "notes": "School Trends for CASL work",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/casl_school_trends.R",
+            "id": "CaslSchoolTrends",
             "label": "CaslSchoolTrends",
-            "color": "rgba(195, 167, 70, 1)"
+            "size": 10
         },
         {
-            "notes": "Remove students that are inactive or have been blacklisted",
-            "id": "RemoveInactiveDumpStudents",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/remove_inactive_dump_students.R",
-            "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
-            "label": "RemoveInactiveDumpStudents",
-            "color": "rgba(35, 48, 168, 1)"
-        },
-        {
-            "notes": "Run the Mathia Rankings",
-            "id": "MathiaScript",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/mathia_script.R",
-            "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
-            "label": "MathiaScript",
-            "color": "rgba(152, 76, 188, 1)"
-        },
-        {
-            "notes": "No Notes",
-            "id": "DB_Access",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/db-access.r",
+            "color": "rgba(35, 188, 78, 1)",
             "last_modified": "2015-08-31 15:02:38",
-            "size": 10,
+            "notes": "No Notes",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/db-access.r",
+            "id": "DB_Access",
             "label": "DB_Access",
-            "color": "rgba(195, 167, 70, 1)"
+            "size": 10
         },
         {
-            "notes": "Quick test of SigRep script",
-            "id": "SigRepTest22",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/test22.R",
-            "last_modified": "2015-08-31 12:34:24",
-            "size": 10,
-            "label": "SigRepTest22",
-            "color": "rgba(195, 167, 70, 1)"
+            "color": "rgba(103, 163, 207, 1)",
+            "last_modified": "2015-08-31 16:54:59",
+            "notes": "Uses Fabric to streamline use of SSH from scripts/applications",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/fabfile.py",
+            "id": "FabFile",
+            "label": "FabFile",
+            "size": 10
         },
         {
+            "color": "rgba(35, 188, 78, 1)",
+            "last_modified": "2015-08-31 15:11:02",
+            "notes": "Generates Sig reports, I think?",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/generate.sig.R",
+            "id": "GenerateSig",
+            "label": "GenerateSig",
+            "size": 10
+        },
+        {
+            "color": "rgba(35, 188, 78, 1)",
+            "last_modified": "2015-08-31 14:54:39",
+            "notes": "Report on iPrep schools. Relies heavily on @SigRep script.",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/iprep_script.R",
+            "id": "iPrepScript",
+            "label": "iPrepScript",
+            "size": 10
+        },
+        {
+            "color": "rgba(132, 41, 203, 1)",
+            "last_modified": "2015-08-31 16:54:59",
             "notes": "Function to build the mathia rankings",
-            "id": "MathiaContest",
             "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/mathia_contest.r",
-            "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
+            "id": "MathiaContest",
             "label": "MathiaContest",
-            "color": "rgba(152, 76, 188, 1)"
+            "size": 10
         },
         {
-            "notes": "Some utility functions used in SigRep",
-            "id": "NewFunction_RemovingStudents",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/new_functions.R",
-            "last_modified": "2015-08-31 14:47:05",
-            "size": 10,
-            "label": "NewFunction_RemovingStudents",
-            "color": "rgba(195, 167, 70, 1)"
-        },
-        {
-            "notes": "This is a copy of its parent and should probably be deleted..",
-            "id": "RemoveInactiveDumpStudents_Autosaved",
-            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/remove_inactive_dump_students (Autosaved).R",
+            "color": "rgba(132, 41, 203, 1)",
             "last_modified": "2015-08-31 16:54:59",
-            "size": 10,
+            "notes": "Run the Mathia Rankings",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/mathia_script.R",
+            "id": "MathiaScript",
+            "label": "MathiaScript",
+            "size": 10
+        },
+        {
+            "color": "rgba(35, 188, 78, 1)",
+            "last_modified": "2015-08-31 14:47:05",
+            "notes": "Some utility functions used in SigRep",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/new_functions.R",
+            "id": "NewFunction_RemovingStudents",
+            "label": "NewFunction_RemovingStudents",
+            "size": 10
+        },
+        {
+            "color": "rgba(35, 188, 78, 1)",
+            "last_modified": "2015-08-31 13:25:55",
+            "notes": "Plot some trends, extracted and modified from SigRep (?)",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/new_trends_report.R",
+            "id": "TrendsReport_New",
+            "label": "TrendsReport_New",
+            "size": 10
+        },
+        {
+            "color": "rgba(210, 121, 147, 1)",
+            "last_modified": "2015-08-31 16:54:59",
+            "notes": "This is a copy of its parent and should probably be deleted..",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/remove_inactive_dump_students (Autosaved).R",
+            "id": "RemoveInactiveDumpStudents_Autosaved",
             "label": "RemoveInactiveDumpStudents_Autosaved",
-            "color": "rgba(35, 48, 168, 1)"
+            "size": 10
+        },
+        {
+            "color": "rgba(210, 121, 147, 1)",
+            "last_modified": "2015-08-31 16:54:59",
+            "notes": "Remove students that are inactive or have been blacklisted",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/remove_inactive_dump_students.R",
+            "id": "RemoveInactiveDumpStudents",
+            "label": "RemoveInactiveDumpStudents",
+            "size": 10
+        },
+        {
+            "color": "rgba(210, 185, 54, 1)",
+            "last_modified": "2015-08-31 16:54:59",
+            "notes": "Create a roster",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/roster.r",
+            "id": "Roster",
+            "label": "Roster",
+            "size": 10
+        },
+        {
+            "color": "rgba(35, 188, 78, 1)",
+            "last_modified": "2015-08-31 14:52:56",
+            "notes": "Main Sig Report script",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/sigRep.R",
+            "id": "SigRep",
+            "label": "SigRep",
+            "size": 10
+        },
+        {
+            "color": "rgba(35, 188, 78, 1)",
+            "last_modified": "2015-08-31 12:34:24",
+            "notes": "Quick test of SigRep script",
+            "filepath": "/Users/rcarlson/local/svn/research/School Improvement Guarantee/test22.R",
+            "id": "SigRepTest22",
+            "label": "SigRepTest22",
+            "size": 10
         }
     ]
 }
