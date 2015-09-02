@@ -20,7 +20,7 @@ This section describes the uses cases for which this project was defined.
 #### Research Project
 
 Research code often has several non-desirable features:
-* Many small utilities that are focused on a specific, narrow task (e.g., data cleanup, analysis)
+* Many small utilities are each focused on a specific, narrow task (e.g., data cleanup, analysis)
 * Many variations of the same task, each specialized for different data sets, are separated out into individual files.
 
 Suppose a researcher, Steve, comes to a project that Bob and Rob have been working on. Bob wrote the initial code, called `best_analysis_ever`. Later on, Rob found the `best_analysis_ever` and, agreeing that this analysis was great, tried to apply it to his new dataset. Unfortunately, Rob found a few errors in Bob's code. He fixed them for this new analysis, though he didn't bubble the changes up to the initial file for fear of breaking things in the original analysis (and Rob was on a tight deadline).
@@ -33,13 +33,13 @@ Our system allows for simple annotations to convey that `best_analysis_ever` was
 
 Software development tends to be a little bit more straightforward, with simpler hierarchies and well-defined objects interacting with other objects in well-defined ways. Still, if the project has source code across multiple languages it may be difficult to get a bird's eye view of the project. Our annotation scheme can help.
 
-Suppose software-developer Susan has been assigned to make a small modification to a component of an app called `Mr Mustacher`, which allows users to upload images with funny captions and the software adds a mustache to the face. It's rad.
+Suppose software-developer Susan has been assigned to make a small modification to a component of an app called `Mr Mustacher`, which allows users to upload pictures of their friends with funny captions and the software adds a mustache to the face. It's rad.
 
 Susan needs to fix a unicode bug in the uploading process where the text caption is not correctly transferred from the website to the server (unfortunately, non-ascii characters are being omitted). Coming into this project, it is not immediately obvious where the communication between the website and server take place.
 
-A graph of this project generated with DocGrapher will show two distinct subgraphs -- one containing files that handle user input and another with files from the server that process user input. The communication between those two components will be represented as a single edge between two large subgraphs, clearly marking Susan's points of investigation.
+A graph of this project generated with DocGrapher will show two distinct subgraphs -- one containing files for the website (that handle user input) and another with files from the server (that adds a mustache and caption). The communication between those two components will be represented as a single edge between two large subgraphs, clearly marking Susan's points of investigation.
 
-## Annotation Schema
+## Annotation Scheme
 
 The DocGrapher will crawl through every file in a specified directory looking for annotations. When found, the files and their corresponding annotations are added to the graph. The annotations are:
 
@@ -56,8 +56,8 @@ The DocGrapher will crawl through every file in a specified directory looking fo
   * For example, if there is a file named `analysis` and we create a new file to specialize the analysis to a specific dataset (`analysis_data1`), then `analysis_data1` will "`@fork`" `analysis`.
   * This is a comma-separated list of `@names`.
 * `@uses`: Any files that the current file uses as input in order to run.
-  * Typically, this is used to demystify the types of files a server takes as input.
-  * For example, the `doc_grapher.html` file "`@uses`" the `create_docgraph.py` script to display its data.
+  * Typically, this is used to demystify the types of files a program (e.g., a server) takes as input.
+  * For example, the `doc_grapher.html` file in this repository "`@uses`" the `create_docgraph.py` script to display its data.
     * Note that `doc_grapher` does not literally take `create_docgraph` as input, but rather the `doc_grapher` input is the output from `create_docgraph`.
   * This is a comma-separated list of `@names`.
 
