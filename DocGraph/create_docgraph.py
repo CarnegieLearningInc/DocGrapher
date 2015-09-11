@@ -16,8 +16,13 @@ import collections
 class DocNode:
     EDGE_TYPE_PARENT = 'parent'
     EDGE_TYPE_SIBLING = 'sibling'
+    EDGE_TYPE_IMPORT = 'import'
+    EDGE_TYPE_FORK = 'fork'
+    EDGE_TYPE_USE = 'use'
 
-    EDGE_TYPES = [EDGE_TYPE_PARENT, EDGE_TYPE_SIBLING]
+    EDGE_TYPES = [EDGE_TYPE_PARENT, EDGE_TYPE_SIBLING,
+                  EDGE_TYPE_IMPORT, EDGE_TYPE_FORK,
+                  EDGE_TYPE_USE]
 
     def __init__(self, name, filepath, notes=None):
         self.name = name  # name is unique
@@ -36,7 +41,7 @@ class DocNode:
         self.color = None  # this is used for graphing
         self.seen = False  # this is used when assigning colors (before they've been assigned a color)
 
-        # for when we're assigning colors, we need to keep track of all parents, siblings, AND children
+        # for when we're assigning colors, we need to keep track of all edges into and out of this node
         self.all_connections = set()
 
     def add_edge(self, identifier, eType):
@@ -61,7 +66,10 @@ class DocNode:
 
     def graph_edges(self, config={}):
         edge_type_map = {'parent': 'arrow',
-                         'sibling': 'dashed'}
+                         'sibling': 'dashed',
+                         self.EDGE_TYPE_IMPORT: 'curvedArrow',
+                         self.EDGE_TYPE_FORK: 'arrow',
+                         self.EDGE_TYPE_USE: 'dashedArrow'}
 
         graph_edges = []
         for idx, edge in enumerate(self.edges):
@@ -87,9 +95,12 @@ def parse_docfile(filepath):
             return None
 
     nameResult = re.search("@name:(.*)\n", text)
-    parentResult = re.search("@parent[s]?:(.*)\n", text)
-    siblingResult = re.search("@sibling[s]?:(.*)\n", text)
+    # parentResult = re.search("@parent[s]?:(.*)\n", text)
+    # siblingResult = re.search("@sibling[s]?:(.*)\n", text)
     notesResult = re.search("@note[s]?:(.*)\n", text)
+    importResult = re.search("@import[s]?:(.*)\n", text)
+    forkResult = re.search("@fork[s]?:(.*)\n", text)
+    useResult = re.search("@use[s]?:(.*)\n", text)
 
     if nameResult is None:
         return None
@@ -97,27 +108,35 @@ def parse_docfile(filepath):
     if len(name) == 0:
         return None
 
-    parents = []
-    if parentResult is not None:
-        parents = [p.strip() for p in parentResult.group(1).split(',')]
-        parents = [p for p in parents if len(p) > 0]
+    def get_list_from_result(result):
+        l = []
+        if result is not None:
+            l = [r.strip() for r in result.group(1).split(',')]
+            l = [r for r in l if len(r) > 0]
+        return l
 
-    siblings = []
-    if siblingResult is not None:
-        siblings = [s.strip() for s in siblingResult.group(1).split(',')]
-        siblings = [s for s in siblings if len(s) > 0]
+    # parents = get_list_from_result(parentResult)
+    # siblings = get_list_from_result(siblingResult)
+    imports = get_list_from_result(importResult)
+    forks = get_list_from_result(forkResult)
+    uses = get_list_from_result(useResult)
 
     notes = None
     if notesResult is not None:
         notes = notesResult.group(1).strip()
         notes = notes if len(notes) > 0 else None
 
-    docnode = DocNode(name=name, filepath=filepath,
-                      notes=notes)
-    for parentID in parents:
-        docnode.add_edge(parentID, 'parent')
-    for siblingID in siblings:
-        docnode.add_edge(siblingID, 'sibling')
+    docnode = DocNode(name=name, filepath=filepath, notes=notes)
+    # for parentID in parents:
+    #     docnode.add_edge(parentID, DocNode.EDGE_TYPE_PARENT)
+    # for siblingID in siblings:
+    #     docnode.add_edge(siblingID, DocNode.EDGE_TYPE_SIBLING)
+    for importID in imports:
+        docnode.add_edge(importID, DocNode.EDGE_TYPE_IMPORT)
+    for forkID in forks:
+        docnode.add_edge(forkID, DocNode.EDGE_TYPE_FORK)
+    for useID in uses:
+        docnode.add_edge(useID, DocNode.EDGE_TYPE_USE)
     return docnode
 
 
@@ -169,9 +188,10 @@ class ColorAssigner:
         # which we put in the .all_connections property
         for name, node in node_map.items():
             for edge in node.edges:
-                node.all_connections.add(edge['id'])
+                edge_id = edge['id']
+                node.all_connections.add(edge_id)
 
-                node_map[edge['id']].all_connections.add(name)
+                node_map[edge_id].all_connections.add(name)
 
         # while we're not done assigning colors
         while not self.all_colors_assigned(node_map):
@@ -228,13 +248,21 @@ def main(args):
                 docnodes[docnode.name] = docnode
 
     # validate all parents & siblings - make sure they actually exist
+    rejectedEdges = []
     for name in docnodes:
         docnode = docnodes[name]
         verified_edges = []
         for edge in docnode.edges:
             if edge['id'] in docnodes:
                 verified_edges.append(edge)
+            else:
+                rejectedEdges.append(edge)
         docnode.edges = verified_edges
+    print('Rejected {} edge{}'.format(
+        len(rejectedEdges),
+        's' if len(rejectedEdges) != 1 else ''))
+    if len(rejectedEdges) > 0:
+        print(rejectedEdges)
 
     ## assign colors to distinct segments
     ## we do this as follows:

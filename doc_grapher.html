@@ -43,11 +43,6 @@
     #slidertitle {
         text-align: center;
     }
-    #search {
-        position:fixed;
-        left:10px;
-        top:10px;
-    }
     #searchBox {
         position:fixed;
         top:1%;
@@ -55,6 +50,12 @@
         height: 2em;
         margin-left:10%;
         font-size: 1.5em;
+
+        /*prevent text selection*/
+        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+        -moz-user-select: none; /* mozilla browsers */
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        -ms-user-select: none; /* IE10+ */
     }
     #sliderquit {
         position:absolute;
@@ -102,6 +103,8 @@
 <script src="lib/sigma.settings.js"></script>
 
 <script src="lib/sigma.canvas.edges.dashed.js"></script>
+<script src="lib/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="lib/sigma.canvas.edges.dashedArrow.js"></script>
 <!-- <script src="lib/sigma.canvas.edges.dotted.js"></script> -->
 
 <script src="lib/worker.js"></script>
