@@ -49,22 +49,21 @@
         /*hide the window*/
         position:fixed;
         top:10%;
-        left:-310px;
-        /*left:0;*/
+        /*left:-410px;*/
+        left:0;
 
         /*set the size and background color*/
-        height:70%; width:300px;
+        /*height:70%; */
+        display: block;
+        overflow: auto;
+        width:400px;
         background-color:#fff;
-
-        /*add border*/
-        /*border-top:1px solid gray;*/
-        /*border-left:1px solid gray;*/
 
         /*setup text*/
         padding-top: 5px;
         padding-left: 10px;
         padding-right: 5px;
-        padding-bottom: 5px;
+        padding-bottom: 20px;
         font-size: 1.2em;
 
         /*add shadow*/
@@ -108,13 +107,9 @@
     }
     .settings-text {
         float:left;
-        /*text-align: left;*/
-        /*display: inline;*/
     }
     .settings-switch {
         float:right;
-        /*text-align: right;*/
-        /*display: inline;*/
     }
 </style>
 </head>
@@ -140,11 +135,13 @@
 
 
 <div id="container"></div>
-<!-- <div id="search">
-    <input id="searchBox" type="text" name="searchBox">
-</div> -->
 <div class="form-group">
-    <input id="searchBox" type="text" class="form-control" placeholder="Search">
+    <input id="searchBox" type="text" class="form-control" placeholder="Search" 
+    ondragstart="return false" draggable="false"
+    ondragenter="event.dataTransfer.dropEffect='none'; event.stopPropagation(); event.preventDefault();"  
+    ondragover="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"  
+    ondrop="event.dataTransfer.dropEffect='none';event.stopPropagation(); event.preventDefault();"
+    >
 </div>
 <div id="detail-slider">
     <div id="detail-slider-title"></div>
@@ -173,9 +170,16 @@
     <span class="settings-switch">
         <input class="settings-switch" id="switch-uses" type="checkbox" name="settings-checkbox" checked>
     </span>
+    <br><br>
+    <p class="settings-text"> Show timestamp on select: </p>
+    <span class="settings-switch">
+        <input class="settings-switch" id="switch-timestamp" type="checkbox" name="settings-checkbox" checked>
+    </span>
 
     <script type="text/javascript">
-        $("[name='settings-checkbox']").bootstrapSwitch();
+        $(document).ready(function() {
+            $("[name='settings-checkbox']").bootstrapSwitch();
+        });
     </script>
 </div>
 
@@ -215,6 +219,8 @@ var transparentize = function(rgba)
 
 var HIGHLIGHT_COLOR = 'rgba(255, 0, 0, 1)' // '#0000ff'
 var UNHIGHLIGHT_COLOR = 'rgba(150, 150, 150, 1)'
+
+var should_show_timestamps_on_select = true;
 
 // Add a method to the graph model that returns an
 // object with every neighbors of a node inside:
@@ -275,6 +281,8 @@ sigma.parsers.json(
             node.originalLabel = node.label
 
             node.lowerLabel = node.label.toLowerCase();
+
+            node.is_selected = false;
         });
 
         var edge_type_mapping = {
@@ -344,9 +352,8 @@ sigma.parsers.json(
         /*
          * bind to clicks
          */
-        s.bind('clickNode', function(e) {
-            var node = e.data.node;
-
+        var onClickNode = function(node)
+        {
             var slidertitle = document.getElementById('detail-slider-title');
             var slidertext = document.getElementById('detail-slider-text');
             // document.getElementById('slider').innerHTML = msg;
@@ -371,6 +378,7 @@ sigma.parsers.json(
 
             nodes.forEach(function(n) {
                 n.color = n == node ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
+                n.is_selected = n == node;
 
                 n.label = n.originalLabel;
             });
@@ -378,11 +386,17 @@ sigma.parsers.json(
             var neighbors = s.graph.neighbors(node.id);
             neighbors.push(node);
             neighbors.forEach(function(n) {
-                n.label = n.originalLabel + ' (' + n.last_modified + ')'
-                console.log(n.last_modified);
+                if (should_show_timestamps_on_select)
+                {
+                    n.label = n.originalLabel + ' (' + n.last_modified + ')'
+                    console.log(n.last_modified);
+                }
             });
 
-            s.refresh()
+            s.refresh()    
+        }
+        s.bind('clickNode', function(e) {
+            onClickNode(e.data.node);
         });
 
         var dismiss_detail_slider = function()
@@ -396,6 +410,7 @@ sigma.parsers.json(
             nodes.forEach(function(n) {
                 n.color = n.originalColor;
                 n.label = n.originalLabel;
+                n.is_selected = false;
             });
 
            searchBox.value = ''; 
@@ -432,12 +447,26 @@ sigma.parsers.json(
                         'switch-uses' : 'use'
                       };
             semantic_type = semantic_type_map[this.id];
-            edges.forEach(function(edge) {
-                if (edge.semantic_type == semantic_type)
-                {
-                    edge.hidden = !state;
-                }
-            });
+            if (semantic_type)
+            {
+                edges.forEach(function(edge) {
+                    if (edge.semantic_type == semantic_type)
+                    {
+                        edge.hidden = !state;
+                    }
+                });
+            }
+
+            if (this.id == 'switch-timestamp')
+            {
+                should_show_timestamps_on_select = state;
+                nodes.forEach(function(node) {
+                    if (node.is_selected)
+                    {
+                        onClickNode(node);
+                    }
+                });
+            }
 
             s.refresh();
         });
@@ -447,7 +476,7 @@ sigma.parsers.json(
 /* settings button */
 $('#settings-button').on('click', function(e) {
     var slider = $('#settings-slider');
-    var targetLeft = slider.position().left != 0 ? 0 : -310;
+    var targetLeft = slider.position().left != 0 ? 0 : -410;
     slider.animate({
         left: targetLeft
     }, {
