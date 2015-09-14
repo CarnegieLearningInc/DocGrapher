@@ -281,6 +281,8 @@ sigma.parsers.json(
             node.originalLabel = node.label
 
             node.lowerLabel = node.label.toLowerCase();
+            node.lowerNotes = node.notes.toLowerCase();
+            node.lowerFilepath = node.filepath.toLowerCase();
 
             node.is_selected = false;
         });
@@ -328,15 +330,17 @@ sigma.parsers.json(
             {
                 regexString += searchterm[i] + '.*'
             }
-            // var regex = new RegExp('.*' + searchterm + '.*', 'g') // strict
-            var regex = new RegExp(regexString);
+            var regexWild = new RegExp(regexString);
+            var regexStrict = new RegExp('.*' + searchterm + '.*', 'g') // strict
             var validSearch = searchterm.length > 0
             nodes.forEach(function(n) {
-                // console.log(n.lowerLabel)
-                var matches = n.lowerLabel.match(regex);
-                // n.color = matches && validSearch ? HIGHLIGHT_COLOR : n.originalColor;
                 if (validSearch)
                 {
+                    var matchesLabel = n.lowerLabel.match(regexWild);
+                    var matchesNotes = n.lowerNotes.match(regexWild);
+                    var matchesFilepath = n.lowerFilepath.match(regexStrict);
+                    var matches = matchesLabel || matchesNotes || matchesFilepath;
+
                     n.color = matches ? HIGHLIGHT_COLOR : UNHIGHLIGHT_COLOR;
                 }
                 else
