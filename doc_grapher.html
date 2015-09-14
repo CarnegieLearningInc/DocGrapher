@@ -6,7 +6,7 @@
         height: 100%;
         margin: auto;
     }
-    #slider{
+    #detail-slider {
         text-align: left;
 
         /*hide the window*/
@@ -40,7 +40,45 @@
         -khtml-user-select: none; /* webkit (konqueror) browsers */
         -ms-user-select: none; /* IE10+ */
     }
-    #slidertitle {
+    #detail-slider-title {
+        text-align: center;
+    }
+    #settings-slider {
+        text-align: left;
+
+        /*hide the window*/
+        position:fixed;
+        top:10%;
+        left:-310px;
+        /*left:0;*/
+
+        /*set the size and background color*/
+        height:70%; width:300px;
+        background-color:#fff;
+
+        /*add border*/
+        /*border-top:1px solid gray;*/
+        /*border-left:1px solid gray;*/
+
+        /*setup text*/
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+        font-size: 1.2em;
+
+        /*add shadow*/
+        -moz-box-shadow: 0px 0px 15px #888;
+        -webkit-box-shadow: 0px 0px 15px #888;
+        box-shadow: 0px 0px 15px #888;
+
+        /*prevent text selection*/
+        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+        -moz-user-select: none; /* mozilla browsers */
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        -ms-user-select: none; /* IE10+ */
+    }
+    #settings-slider-title {
         text-align: center;
     }
     #searchBox {
@@ -57,10 +95,26 @@
         -khtml-user-select: none; /* webkit (konqueror) browsers */
         -ms-user-select: none; /* IE10+ */
     }
-    #sliderquit {
+    #settings-button {
+        position:fixed;
+        top:1%;
+        left:10px;
+        height:3em;
+    }
+    #detail-slider-quit {
         position:absolute;
         top:1px;
         right:1px;
+    }
+    .settings-text {
+        float:left;
+        /*text-align: left;*/
+        /*display: inline;*/
+    }
+    .settings-switch {
+        float:right;
+        /*text-align: right;*/
+        /*display: inline;*/
     }
 </style>
 </head>
@@ -81,6 +135,9 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+<link rel="stylesheet" href="lib/bootstrap-switch/bootstrap-switch.min.css">
+<script src="lib/bootstrap-switch/bootstrap-switch.min.js"></script>
+
 
 <div id="container"></div>
 <!-- <div id="search">
@@ -89,26 +146,52 @@
 <div class="form-group">
     <input id="searchBox" type="text" class="form-control" placeholder="Search">
 </div>
-<div id="slider">
-    <div id="slidertitle"></div>
-    <div id="slidertext"></div>
-    <button id="sliderquit" type="button" class="btn btn-danger">
+<div id="detail-slider">
+    <div id="detail-slider-title"></div>
+    <div id="detail-slider-text"></div>
+    <button id="detail-slider-quit" type="button" class="btn btn-danger">
         <span class="glyphicon glyphicon-remove"></span>
     </button>
 </div>
+<button id="settings-button" type="button" class="btn btn-default">
+    <span class="glyphicon glyphicon-menu-hamburger"></span>
+</button>
+<div id="settings-slider">
+    <div id="settings-slider-title"><h1>Settings</h1></div>
 
+    <p class="settings-text"> Show @imports: </p>
+    <span class="settings-switch">
+        <input class="settings-switch" id="switch-imports" type="checkbox" name="settings-checkbox" checked>
+    </span>
+    <br><br>
+    <p class="settings-text"> Show @forks: </p>
+    <span class="settings-switch">
+        <input class="settings-switch" id="switch-forks" type="checkbox" name="settings-checkbox" checked>
+    </span>
+    <br><br>
+    <p class="settings-text"> Show @uses: </p>
+    <span class="settings-switch">
+        <input class="settings-switch" id="switch-uses" type="checkbox" name="settings-checkbox" checked>
+    </span>
+
+    <script type="text/javascript">
+        $("[name='settings-checkbox']").bootstrapSwitch();
+    </script>
+</div>
+
+<!-- import sigma js scripts -->
 <script src="lib/sigma.min.js"></script>
-<script src="lib/sigma.parsers.json.min.js"></script>
-<script src="lib/sigma.plugins.dragNodes.js"></script>
 <script src="lib/sigma.settings.js"></script>
+<script src="lib/sigma.parsers.json/sigma.parsers.json.js"></script>
+<script src="lib/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"></script>
 
-<script src="lib/sigma.canvas.edges.dashed.js"></script>
-<script src="lib/sigma.canvas.edges.curvedArrow.js"></script>
-<script src="lib/sigma.canvas.edges.dashedArrow.js"></script>
-<!-- <script src="lib/sigma.canvas.edges.dotted.js"></script> -->
+<!-- <script src="lib/sigma.renderers.customEdgeShapes/sigma.canvas.edges.dashed.js"></script> -->
+<script src="lib/sigma.renderers.parallelEdges/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="lib/sigma.renderers.parallelEdges/sigma.canvas.edges.curvedDashedArrow.js"></script>
+<!-- <script src="lib/sigma.canvas.edges.dashedArrow.js"></script> -->
 
-<script src="lib/worker.js"></script>
-<script src="lib/supervisor.js"></script>
+<script src="lib/sigma.layout.forceAtlas2/worker.js"></script>
+<script src="lib/sigma.layout.forceAtlas2/supervisor.js"></script>
 
 <script>
 // disable right-click
@@ -181,6 +264,7 @@ sigma.parsers.json(
     function() {
         var i;
         var nodes = s.graph.nodes();
+        var edges = s.graph.edges();
         var len = nodes.length;
 
         nodes.forEach(function(node) {
@@ -192,6 +276,16 @@ sigma.parsers.json(
 
             node.lowerLabel = node.label.toLowerCase();
         });
+
+        // var edge_type_mapping = {
+        //     'import' : 'arrow',
+        //     'fork' : 'curvedArrow',
+        //     'use' : 'curvedDashedArrow'
+        // }
+
+        // edges.forEach(function(edge) {
+        //     edge.type = edge_type_mapping[edge.semantic_type]
+        // });
 
         s.refresh();
 
@@ -253,8 +347,8 @@ sigma.parsers.json(
         s.bind('clickNode', function(e) {
             var node = e.data.node;
 
-            var slidertitle = document.getElementById('slidertitle');
-            var slidertext = document.getElementById('slidertext');
+            var slidertitle = document.getElementById('detail-slider-title');
+            var slidertext = document.getElementById('detail-slider-text');
             // document.getElementById('slider').innerHTML = msg;
 
             slidertitle.innerHTML = '<b>' + node.id + '</b><br><br>';
@@ -265,7 +359,7 @@ sigma.parsers.json(
             // msg += '<b>Color:</b> ' + node.originalColor
             slidertext.innerHTML = msg;
 
-            $('#slider').animate({
+            $('#detail-slider').animate({
                 bottom: 0
             }, { 
                 duration: "fast"
@@ -291,9 +385,9 @@ sigma.parsers.json(
             s.refresh()
         });
 
-        var dismiss_slider = function()
+        var dismiss_detail_slider = function()
         {
-            $('#slider').animate({
+            $('#detail-slider').animate({
                 bottom: -270
             }, {
                 duration: "fast"
@@ -310,17 +404,17 @@ sigma.parsers.json(
         }
 
         s.bind('doubleClickStage', function(e) {
-            dismiss_slider();
+            dismiss_detail_slider();
         });
 
-        $('#sliderquit').on('click', function(e) {
-            dismiss_slider();
+        $('#detail-slider-quit').on('click', function(e) {
+            dismiss_detail_slider();
         });
 
         $(document).keydown(function(e) {
             if (e.keyCode == 27)
             {
-                dismiss_slider();
+                dismiss_detail_slider();
             }
             else if ((e.ctrlKey | e.metaKey) && e.keyCode == 70)
             {
@@ -328,8 +422,38 @@ sigma.parsers.json(
                 e.preventDefault();
             }
         });
+
+        /* settings panel */
+        $('[name="settings-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+            var semantic_type = null;
+            var semantic_type_map = {
+                        'switch-imports': 'import',
+                        'switch-forks' : 'fork',
+                        'switch-uses' : 'use'
+                      };
+            semantic_type = semantic_type_map[this.id];
+            edges.forEach(function(edge) {
+                if (edge.semantic_type == semantic_type)
+                {
+                    edge.hidden = !state;
+                }
+            });
+
+            s.refresh();
+        });
+
     });
 
+/* settings button */
+$('#settings-button').on('click', function(e) {
+    var slider = $('#settings-slider');
+    var targetLeft = slider.position().left != 0 ? 0 : -310;
+    slider.animate({
+        left: targetLeft
+    }, {
+        duration: 400
+    });
+});
 </script>
 </body>
 </html>

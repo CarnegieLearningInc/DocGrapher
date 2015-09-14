@@ -67,9 +67,9 @@ class DocNode:
     def graph_edges(self, config={}):
         edge_type_map = {'parent': 'arrow',
                          'sibling': 'dashed',
-                         self.EDGE_TYPE_IMPORT: 'curvedArrow',
-                         self.EDGE_TYPE_FORK: 'arrow',
-                         self.EDGE_TYPE_USE: 'dashedArrow'}
+                         self.EDGE_TYPE_IMPORT: 'arrow',
+                         self.EDGE_TYPE_FORK: 'curvedArrow',
+                         self.EDGE_TYPE_USE: 'curvedDashedArrow'}
 
         graph_edges = []
         for idx, edge in enumerate(self.edges):
@@ -79,6 +79,8 @@ class DocNode:
             graph_edge['target'] = self.name
 
             graph_edge['type'] = edge_type_map[edge['type']]
+
+            graph_edge['semantic_type'] = edge['type']
 
             graph_edges.append(graph_edge)
 
