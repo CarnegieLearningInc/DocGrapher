@@ -65,20 +65,12 @@ class DocNode:
         return node
 
     def graph_edges(self, config={}):
-        edge_type_map = {'parent': 'arrow',
-                         'sibling': 'dashed',
-                         self.EDGE_TYPE_IMPORT: 'arrow',
-                         self.EDGE_TYPE_FORK: 'curvedArrow',
-                         self.EDGE_TYPE_USE: 'curvedDashedArrow'}
-
         graph_edges = []
         for idx, edge in enumerate(self.edges):
             graph_edge = copy.copy(config)
             graph_edge['id'] = '{}_e{}'.format(self.name, idx)
             graph_edge['source'] = edge['id']
             graph_edge['target'] = self.name
-
-            graph_edge['type'] = edge_type_map[edge['type']]
 
             graph_edge['semantic_type'] = edge['type']
 

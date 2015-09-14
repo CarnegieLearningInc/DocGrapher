@@ -277,15 +277,15 @@ sigma.parsers.json(
             node.lowerLabel = node.label.toLowerCase();
         });
 
-        // var edge_type_mapping = {
-        //     'import' : 'arrow',
-        //     'fork' : 'curvedArrow',
-        //     'use' : 'curvedDashedArrow'
-        // }
+        var edge_type_mapping = {
+            'import' : 'arrow',
+            'fork' : 'curvedArrow',
+            'use' : 'curvedDashedArrow'
+        }
 
-        // edges.forEach(function(edge) {
-        //     edge.type = edge_type_mapping[edge.semantic_type]
-        // });
+        edges.forEach(function(edge) {
+            edge.type = edge_type_mapping[edge.semantic_type]
+        });
 
         s.refresh();
 
