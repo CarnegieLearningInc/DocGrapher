@@ -252,6 +252,7 @@ def main(args):
             else:
                 rejectedEdges.append(edge)
         docnode.edges = verified_edges
+    # print any rejected edges
     print('Rejected {} edge{}'.format(
         len(rejectedEdges),
         's' if len(rejectedEdges) != 1 else ''))

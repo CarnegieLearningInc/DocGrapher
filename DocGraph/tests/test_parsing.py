@@ -43,101 +43,101 @@ class ParsingTests(unittest.TestCase):
         if os.path.isfile(TEST_FILENAME):
             os.remove(TEST_FILENAME)
 
-    def test_parse_allFields_singleParent_singularNote_singularSibling(self):
-        with open(TEST_FILENAME, 'w') as f:
-            f.write('@name:{}\n'.format(NAME))
-            f.write('@parent: {}\n'.format(PARENT1))
-            f.write('@sibling: {}\n'.format(SIBLING1))
-            f.write('@note: {}\n'.format(NOTE))
-
-        docnode = parse_docfile(TEST_FILENAME)
-        self.assertEqual(docnode.name, NAME)
-        self.assertEqual(docnode.edges, [PARENT1_EDGE, SIBLING1_EDGE])
-        self.assertEqual(docnode.notes, NOTE)
-
-    def test_parse_allFields_multipleParents_multipleSiblings(self):
-        with open(TEST_FILENAME, 'w') as f:
-            f.write('@name:{}\n'.format(NAME))
-            f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
-            f.write('@siblings: {},   {}\n'.format(SIBLING1, SIBLING2))
-            f.write('@notes: {}\n'.format(NOTE))
-
-        docnode = parse_docfile(TEST_FILENAME)
-
-        self.assertEqual(docnode.name, NAME)
-        self.assertEqual(docnode.edges, [PARENT1_EDGE, PARENT2_EDGE,
-                                         SIBLING1_EDGE, SIBLING2_EDGE])
-        self.assertEqual(docnode.notes, NOTE)
-
-    # def test_parse_noName(self):
+    # def test_parse_allFields_singleParent_singularNote_singularSibling(self):
     #     with open(TEST_FILENAME, 'w') as f:
-    #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
-    #         f.write('@notes: {}\n'.format(NOTE))
+    #         f.write('@name:{}\n'.format(NAME))
+    #         f.write('@parent: {}\n'.format(PARENT1))
+    #         f.write('@sibling: {}\n'.format(SIBLING1))
+    #         f.write('@note: {}\n'.format(NOTE))
 
     #     docnode = parse_docfile(TEST_FILENAME)
+    #     self.assertEqual(docnode.name, NAME)
+    #     self.assertEqual(docnode.edges, [PARENT1_EDGE, SIBLING1_EDGE])
+    #     self.assertEqual(docnode.notes, NOTE)
 
-    #     self.assertIsNone(docnode)
-
-    # def test_parse_missingName(self):
-    #     with open(TEST_FILENAME, 'w') as f:
-    #         f.write('@name: \n')
-    #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
-    #         f.write('@notes: {}\n'.format(NOTE))
-
-    #     docnode = parse_docfile(TEST_FILENAME)
-
-    #     self.assertIsNone(docnode)
-
-    def test_parse_noParent_noSiblings(self):
-        with open(TEST_FILENAME, 'w') as f:
-            f.write('@name:{}\n'.format(NAME))
-            f.write('@notes: {}\n'.format(NOTE))
-
-        docnode = parse_docfile(TEST_FILENAME)
-
-        self.assertEqual(docnode.name, NAME)
-        self.assertEqual(docnode.edges, [])
-        self.assertEqual(docnode.notes, NOTE)
-
-    def test_parse_missingParents_missingSiblings(self):
-        with open(TEST_FILENAME, 'w') as f:
-            f.write('@name:{}\n'.format(NAME))
-            f.write('@parents: ,  \n')
-            f.write('@siblings: ,  \n')
-            f.write('@notes: {}\n'.format(NOTE))
-
-        docnode = parse_docfile(TEST_FILENAME)
-
-        self.assertEqual(docnode.name, NAME)
-        self.assertEqual(docnode.edges, [])
-        self.assertEqual(docnode.notes, NOTE)
-
-    # def test_parse_noNotes(self):
+    # def test_parse_allFields_multipleParents_multipleSiblings(self):
     #     with open(TEST_FILENAME, 'w') as f:
     #         f.write('@name:{}\n'.format(NAME))
     #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
     #         f.write('@siblings: {},   {}\n'.format(SIBLING1, SIBLING2))
+    #         f.write('@notes: {}\n'.format(NOTE))
 
     #     docnode = parse_docfile(TEST_FILENAME)
 
     #     self.assertEqual(docnode.name, NAME)
     #     self.assertEqual(docnode.edges, [PARENT1_EDGE, PARENT2_EDGE,
     #                                      SIBLING1_EDGE, SIBLING2_EDGE])
-    #     self.assertIsNone(docnode.notes)
+    #     self.assertEqual(docnode.notes, NOTE)
 
-    # def test_parse_missingNotes(self):
+    # # def test_parse_noName(self):
+    # #     with open(TEST_FILENAME, 'w') as f:
+    # #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
+    # #         f.write('@notes: {}\n'.format(NOTE))
+
+    # #     docnode = parse_docfile(TEST_FILENAME)
+
+    # #     self.assertIsNone(docnode)
+
+    # # def test_parse_missingName(self):
+    # #     with open(TEST_FILENAME, 'w') as f:
+    # #         f.write('@name: \n')
+    # #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
+    # #         f.write('@notes: {}\n'.format(NOTE))
+
+    # #     docnode = parse_docfile(TEST_FILENAME)
+
+    # #     self.assertIsNone(docnode)
+
+    # def test_parse_noParent_noSiblings(self):
     #     with open(TEST_FILENAME, 'w') as f:
     #         f.write('@name:{}\n'.format(NAME))
-    #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
-    #         f.write('@siblings: {},   {}\n'.format(SIBLING1, SIBLING2))
-    #         f.write('@notes: \n')
+    #         f.write('@notes: {}\n'.format(NOTE))
 
     #     docnode = parse_docfile(TEST_FILENAME)
 
     #     self.assertEqual(docnode.name, NAME)
-    #     self.assertEqual(docnode.edges, [PARENT1_EDGE, PARENT2_EDGE,
-    #                                      SIBLING1_EDGE, SIBLING2_EDGE])
-    #     self.assertIsNone(docnode.notes)
+    #     self.assertEqual(docnode.edges, [])
+    #     self.assertEqual(docnode.notes, NOTE)
+
+    # def test_parse_missingParents_missingSiblings(self):
+    #     with open(TEST_FILENAME, 'w') as f:
+    #         f.write('@name:{}\n'.format(NAME))
+    #         f.write('@parents: ,  \n')
+    #         f.write('@siblings: ,  \n')
+    #         f.write('@notes: {}\n'.format(NOTE))
+
+    #     docnode = parse_docfile(TEST_FILENAME)
+
+    #     self.assertEqual(docnode.name, NAME)
+    #     self.assertEqual(docnode.edges, [])
+    #     self.assertEqual(docnode.notes, NOTE)
+
+    # # def test_parse_noNotes(self):
+    # #     with open(TEST_FILENAME, 'w') as f:
+    # #         f.write('@name:{}\n'.format(NAME))
+    # #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
+    # #         f.write('@siblings: {},   {}\n'.format(SIBLING1, SIBLING2))
+
+    # #     docnode = parse_docfile(TEST_FILENAME)
+
+    # #     self.assertEqual(docnode.name, NAME)
+    # #     self.assertEqual(docnode.edges, [PARENT1_EDGE, PARENT2_EDGE,
+    # #                                      SIBLING1_EDGE, SIBLING2_EDGE])
+    # #     self.assertIsNone(docnode.notes)
+
+    # # def test_parse_missingNotes(self):
+    # #     with open(TEST_FILENAME, 'w') as f:
+    # #         f.write('@name:{}\n'.format(NAME))
+    # #         f.write('@parents: {},  {} \n'.format(PARENT1, PARENT2))
+    # #         f.write('@siblings: {},   {}\n'.format(SIBLING1, SIBLING2))
+    # #         f.write('@notes: \n')
+
+    # #     docnode = parse_docfile(TEST_FILENAME)
+
+    # #     self.assertEqual(docnode.name, NAME)
+    # #     self.assertEqual(docnode.edges, [PARENT1_EDGE, PARENT2_EDGE,
+    # #                                      SIBLING1_EDGE, SIBLING2_EDGE])
+    # #     self.assertIsNone(docnode.notes)
 
     ###
     ### New Annotation Scheme
