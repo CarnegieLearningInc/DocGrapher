@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from ImportManager import ImportManager
+
 import sys
 import re
 import copy
@@ -240,6 +242,10 @@ def main(args):
                     #                  .format(path))
                     continue
                 docnodes[docnode.name] = docnode
+
+    # if any docnodes have auto import set up, take care of that
+    import_manager = ImportManager()
+    import_manager.add_auto_imports(list(docnodes.values()))
 
     # validate all parents & siblings - make sure they actually exist
     rejectedEdges = []
